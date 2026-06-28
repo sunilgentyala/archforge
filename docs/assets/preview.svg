@@ -1,0 +1,246 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720">
+  <defs>
+    <linearGradient id="bgMain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#07070f"/>
+      <stop offset="100%" style="stop-color:#0d0d1f"/>
+    </linearGradient>
+    <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="45%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="browserChrome" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1e2e"/>
+      <stop offset="100%" style="stop-color:#191928"/>
+    </linearGradient>
+    <linearGradient id="cardGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.08"/>
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.03"/>
+    </linearGradient>
+    <linearGradient id="cardGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.08"/>
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0.03"/>
+    </linearGradient>
+    <linearGradient id="cardGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.08"/>
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0.03"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="25%" cy="40%" r="55%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.12"/>
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="80%" cy="55%" r="45%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.09"/>
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0"/>
+    </radialGradient>
+    <clipPath id="browserClip">
+      <rect x="0" y="44" width="1200" height="676" rx="0"/>
+    </clipPath>
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- BROWSER CHROME                          -->
+  <!-- ═══════════════════════════════════════ -->
+  <rect width="1200" height="720" rx="10" fill="#111118" stroke="#2a2a3a" stroke-width="1.5"/>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="1200" height="44" rx="10" fill="url(#browserChrome)"/>
+  <rect x="0" y="32" width="1200" height="12" fill="#191928"/>
+
+  <!-- Traffic lights -->
+  <circle cx="22" cy="22" r="6" fill="#ff5f57"/>
+  <circle cx="42" cy="22" r="6" fill="#febc2e"/>
+  <circle cx="62" cy="22" r="6" fill="#28c840"/>
+
+  <!-- URL bar -->
+  <rect x="130" y="11" width="480" height="22" rx="11" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="370" y="26" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" fill="#64748b" text-anchor="middle">sunilgentyala.github.io/archforge/</text>
+
+  <!-- Nav icons (right side of chrome) -->
+  <rect x="780" y="14" width="16" height="16" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <rect x="804" y="14" width="16" height="16" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- APP CONTENT                             -->
+  <!-- ═══════════════════════════════════════ -->
+  <g clip-path="url(#browserClip)">
+
+    <!-- Page background -->
+    <rect x="0" y="44" width="1200" height="676" fill="url(#bgMain)"/>
+    <rect x="0" y="44" width="1200" height="676" fill="url(#glow1)"/>
+    <rect x="0" y="44" width="1200" height="676" fill="url(#glow2)"/>
+
+    <!-- Subtle grid -->
+    <g opacity="0.025" stroke="#6366f1" stroke-width="1">
+      <line x1="0" y1="104" x2="1200" y2="104"/>
+      <line x1="0" y1="164" x2="1200" y2="164"/>
+      <line x1="0" y1="224" x2="1200" y2="224"/>
+      <line x1="0" y1="284" x2="1200" y2="284"/>
+      <line x1="0" y1="344" x2="1200" y2="344"/>
+      <line x1="0" y1="404" x2="1200" y2="404"/>
+      <line x1="0" y1="464" x2="1200" y2="464"/>
+      <line x1="0" y1="524" x2="1200" y2="524"/>
+      <line x1="0" y1="584" x2="1200" y2="584"/>
+      <line x1="0" y1="644" x2="1200" y2="644"/>
+      <line x1="120" y1="44" x2="120" y2="720"/>
+      <line x1="240" y1="44" x2="240" y2="720"/>
+      <line x1="360" y1="44" x2="360" y2="720"/>
+      <line x1="480" y1="44" x2="480" y2="720"/>
+      <line x1="600" y1="44" x2="600" y2="720"/>
+      <line x1="720" y1="44" x2="720" y2="720"/>
+      <line x1="840" y1="44" x2="840" y2="720"/>
+      <line x1="960" y1="44" x2="960" y2="720"/>
+      <line x1="1080" y1="44" x2="1080" y2="720"/>
+    </g>
+
+    <!-- ─────────────────────────────────── -->
+    <!-- NAV BAR                             -->
+    <!-- ─────────────────────────────────── -->
+    <rect x="0" y="44" width="1200" height="52" fill="rgba(7,7,15,0.90)"/>
+    <line x1="0" y1="96" x2="1200" y2="96" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+
+    <!-- Logo icon (mini arch) -->
+    <g transform="translate(32, 58)">
+      <path d="M0 20 Q12 2 24 20" stroke="url(#heroGrad)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <line x1="-3" y1="20" x2="27" y2="20" stroke="url(#heroGrad)" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="12" cy="3" r="2.5" fill="#8b5cf6"/>
+      <circle cx="0" cy="20" r="2" fill="#6366f1"/>
+      <circle cx="24" cy="20" r="2" fill="#06b6d4"/>
+    </g>
+    <text x="64" y="75" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="white">Arch</text>
+    <text x="96" y="75" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" fill="url(#heroGrad)">Forge</text>
+
+    <!-- Nav links -->
+    <text x="220" y="75" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" fill="#64748b">Patterns</text>
+    <text x="310" y="75" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" fill="#64748b">Calculator</text>
+    <text x="410" y="75" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" fill="#64748b">Templates</text>
+    <text x="510" y="75" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" fill="#64748b">AI Systems</text>
+
+    <!-- GitHub CTA button -->
+    <rect x="1098" y="60" width="74" height="28" rx="6" fill="url(#heroGrad)"/>
+    <text x="1135" y="79" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="white" text-anchor="middle">GitHub</text>
+
+    <!-- ─────────────────────────────────── -->
+    <!-- HERO SECTION                        -->
+    <!-- ─────────────────────────────────── -->
+
+    <!-- Live badge -->
+    <rect x="490" y="116" width="220" height="24" rx="12" fill="rgba(99,102,241,0.12)" stroke="rgba(99,102,241,0.30)" stroke-width="1"/>
+    <circle cx="507" cy="128" r="4" fill="#6366f1"/>
+    <text x="520" y="133" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" fill="#a5b4fc">Open Source &amp; Free Forever</text>
+
+    <!-- Hero headline line 1 -->
+    <text x="600" y="185" font-family="'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="white" text-anchor="middle" letter-spacing="-1.5">The system design</text>
+
+    <!-- Hero headline line 2 -->
+    <text x="600" y="237" font-family="'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="white" text-anchor="middle" letter-spacing="-1.5">workbench you</text>
+
+    <!-- Hero headline line 3 (gradient) -->
+    <text x="600" y="289" font-family="'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="url(#heroGrad)" text-anchor="middle" letter-spacing="-1.5">actually need</text>
+
+    <!-- Hero subtext -->
+    <text x="600" y="325" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#64748b" text-anchor="middle">60+ interactive patterns, AI/LLM architectures, and a real-time capacity planner.</text>
+    <text x="600" y="344" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#64748b" text-anchor="middle">Built for engineers who design at scale.</text>
+
+    <!-- CTA buttons -->
+    <rect x="456" y="366" width="160" height="40" rx="8" fill="url(#heroGrad)" filter="url(#cardShadow)"/>
+    <text x="536" y="391" font-family="'Segoe UI', Arial, sans-serif" font-size="13.5" font-weight="600" fill="white" text-anchor="middle">Explore Patterns  →</text>
+
+    <rect x="632" y="366" width="168" height="40" rx="8" fill="none" stroke="rgba(99,102,241,0.45)" stroke-width="1.5"/>
+    <text x="716" y="391" font-family="'Segoe UI', Arial, sans-serif" font-size="13.5" font-weight="500" fill="#e2e8f0" text-anchor="middle">⚙ Capacity Calculator</text>
+
+    <!-- ─────────────────────────────────── -->
+    <!-- STATS BAR                           -->
+    <!-- ─────────────────────────────────── -->
+    <rect x="0" y="428" width="1200" height="68" fill="#0d0d1f"/>
+    <line x1="0" y1="428" x2="1200" y2="428" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <line x1="0" y1="496" x2="1200" y2="496" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+
+    <!-- Stat dividers -->
+    <line x1="240" y1="440" x2="240" y2="484" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <line x1="480" y1="440" x2="480" y2="484" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <line x1="720" y1="440" x2="720" y2="484" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <line x1="960" y1="440" x2="960" y2="484" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+
+    <!-- Stat 1 -->
+    <text x="120" y="463" font-family="'Segoe UI', Arial, sans-serif" font-size="26" font-weight="800" fill="url(#heroGrad)" text-anchor="middle">60+</text>
+    <text x="120" y="481" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#475569" text-anchor="middle" letter-spacing="0.08em">DESIGN PATTERNS</text>
+    <!-- Stat 2 -->
+    <text x="360" y="463" font-family="'Segoe UI', Arial, sans-serif" font-size="26" font-weight="800" fill="url(#heroGrad)" text-anchor="middle">8</text>
+    <text x="360" y="481" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#475569" text-anchor="middle" letter-spacing="0.08em">CATEGORIES</text>
+    <!-- Stat 3 -->
+    <text x="600" y="463" font-family="'Segoe UI', Arial, sans-serif" font-size="26" font-weight="800" fill="url(#heroGrad)" text-anchor="middle">7</text>
+    <text x="600" y="481" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#475569" text-anchor="middle" letter-spacing="0.08em">AI/LLM PATTERNS</text>
+    <!-- Stat 4 -->
+    <text x="840" y="463" font-family="'Segoe UI', Arial, sans-serif" font-size="26" font-weight="800" fill="url(#heroGrad)" text-anchor="middle">6</text>
+    <text x="840" y="481" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#475569" text-anchor="middle" letter-spacing="0.08em">INTERVIEW TEMPLATES</text>
+    <!-- Stat 5 -->
+    <text x="1080" y="463" font-family="'Segoe UI', Arial, sans-serif" font-size="26" font-weight="800" fill="url(#heroGrad)" text-anchor="middle">100%</text>
+    <text x="1080" y="481" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" fill="#475569" text-anchor="middle" letter-spacing="0.08em">FREE &amp; OPEN SOURCE</text>
+
+    <!-- ─────────────────────────────────── -->
+    <!-- PATTERN CARDS (partial peek)        -->
+    <!-- ─────────────────────────────────── -->
+
+    <!-- Card 1: Load Balancer -->
+    <rect x="40" y="516" width="352" height="148" rx="10" fill="url(#cardGrad1)" stroke="rgba(99,102,241,0.18)" stroke-width="1"/>
+    <text x="60" y="548" font-family="'Segoe UI', Arial, sans-serif" font-size="22">⚖️</text>
+    <!-- Complexity dots -->
+    <circle cx="342" cy="534" r="4" fill="#6366f1"/>
+    <circle cx="330" cy="534" r="4" fill="#6366f1"/>
+    <circle cx="318" cy="534" r="4" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="306" cy="534" r="4" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="294" cy="534" r="4" fill="rgba(255,255,255,0.12)"/>
+    <text x="60" y="577" font-family="'Segoe UI', Arial, sans-serif" font-size="14.5" font-weight="700" fill="#f1f5f9">Load Balancer</text>
+    <text x="60" y="597" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#64748b">Distribute traffic across a fleet of servers</text>
+    <text x="60" y="614" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#64748b">using Round Robin, Least Connections, or</text>
+    <text x="60" y="631" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#64748b">IP Hash algorithms.</text>
+    <rect x="60" y="644" width="90" height="16" rx="4" fill="rgba(99,102,241,0.12)"/>
+    <text x="105" y="655.5" font-family="'Segoe UI', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#a5b4fc" text-anchor="middle" letter-spacing="0.05em">INFRASTRUCTURE</text>
+
+    <!-- Card 2: Vector Database -->
+    <rect x="424" y="516" width="352" height="148" rx="10" fill="url(#cardGrad2)" stroke="rgba(6,182,212,0.18)" stroke-width="1"/>
+    <text x="444" y="548" font-family="'Segoe UI', Arial, sans-serif" font-size="22">🧠</text>
+    <!-- Complexity dots -->
+    <circle cx="726" cy="534" r="4" fill="#06b6d4"/>
+    <circle cx="714" cy="534" r="4" fill="#06b6d4"/>
+    <circle cx="702" cy="534" r="4" fill="#06b6d4"/>
+    <circle cx="690" cy="534" r="4" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="678" cy="534" r="4" fill="rgba(255,255,255,0.12)"/>
+    <text x="444" y="577" font-family="'Segoe UI', Arial, sans-serif" font-size="14.5" font-weight="700" fill="#f1f5f9">Vector Database</text>
+    <text x="444" y="597" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#64748b">Store and search high-dimensional embeddings</text>
+    <text x="444" y="614" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#64748b">for AI features, semantic search, and RAG</text>
+    <text x="444" y="631" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#64748b">pipelines. Powered by Pinecone or pgvector.</text>
+    <rect x="444" y="644" width="88" height="16" rx="4" fill="rgba(16,185,129,0.12)"/>
+    <text x="488" y="655.5" font-family="'Segoe UI', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#6ee7b7" text-anchor="middle" letter-spacing="0.05em">DATA STORAGE</text>
+
+    <!-- Card 3: LLM Serving -->
+    <rect x="808" y="516" width="352" height="148" rx="10" fill="url(#cardGrad3)" stroke="rgba(139,92,246,0.20)" stroke-width="1"/>
+    <!-- NEW badge -->
+    <rect x="1092" y="522" width="60" height="16" rx="4" fill="rgba(139,92,246,0.20)" stroke="rgba(139,92,246,0.35)" stroke-width="1"/>
+    <text x="1122" y="533.5" font-family="'Segoe UI', Arial, sans-serif" font-size="8.5" font-weight="800" fill="#c4b5fd" text-anchor="middle" letter-spacing="0.07em">NEW 2026</text>
+    <text x="828" y="548" font-family="'Segoe UI', Arial, sans-serif" font-size="22">🤖</text>
+    <!-- Complexity dots (5/5) -->
+    <circle cx="1110" cy="534" r="4" fill="#8b5cf6"/>
+    <circle cx="1098" cy="534" r="4" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="1086" cy="534" r="4" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="1074" cy="534" r="4" fill="rgba(255,255,255,0.12)"/>
+    <circle cx="1062" cy="534" r="4" fill="rgba(255,255,255,0.12)"/>
+    <text x="828" y="577" font-family="'Segoe UI', Arial, sans-serif" font-size="14.5" font-weight="700" fill="#f1f5f9">LLM Serving Architecture</text>
+    <text x="828" y="597" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#64748b">Serve large language models at low latency</text>
+    <text x="828" y="614" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#64748b">using vLLM, continuous batching, and KV</text>
+    <text x="828" y="631" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#64748b">cache reuse to maximize GPU utilization.</text>
+    <rect x="828" y="644" width="56" height="16" rx="4" fill="rgba(99,102,241,0.18)"/>
+    <text x="856" y="655.5" font-family="'Segoe UI', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#818cf8" text-anchor="middle" letter-spacing="0.05em">AI / ML</text>
+
+    <!-- Bottom fade -->
+    <rect x="0" y="660" width="1200" height="60" fill="url(#bgMain)" opacity="0.85"/>
+
+  </g>
+
+  <!-- Outer border -->
+  <rect x="0.75" y="0.75" width="1198.5" height="718.5" rx="9.5" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+</svg>

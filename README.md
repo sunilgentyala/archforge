@@ -50,6 +50,10 @@ Everything is open source and will stay that way.
 >
 > No signup. No paywall. No ads. Works in any browser.
 
+<br/>
+
+[![ArchForge preview](docs/assets/preview.svg)](https://sunilgentyala.github.io/archforge/)
+
 ---
 
 ## Where ArchForge Fills the Gaps
