@@ -30,7 +30,7 @@
 
 ## What is ArchForge?
 
-Most system design resources fall into one of two buckets: a static wall of markdown that you read once and forget, or a paywalled course that recycles the same eight example problems. The [System Design Primer](https://github.com/donnemartin/system-design-primer) deserves every one of its 350k stars, but it was last meaningfully updated around 2017, covers roughly 20 patterns, and predates the entire AI/ML infrastructure space.
+Most system design resources fall into one of two buckets: a static wall of markdown that you read once and forget, or a paywalled course that recycles the same eight example problems. The most popular free reference covers roughly 20 patterns, was last meaningfully updated around 2017, and predates the entire AI/ML infrastructure space.
 
 ArchForge was built to fill those gaps. It is a browser-based workbench with no install, no account, and no cost:
 
