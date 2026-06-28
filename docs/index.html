@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ArchForge - The Modern System Design Workbench</title>
+  <meta name="description" content="60+ interactive system design patterns, AI-ready architectures, and a built-in capacity planner. The modern, free, open-source alternative to static primers."/>
+  <meta property="og:title" content="ArchForge - The Modern System Design Workbench"/>
+  <meta property="og:description" content="60+ interactive system design patterns, AI/LLM architectures, and a real-time capacity calculator. Built for engineers who design at scale."/>
+  <meta property="og:image" content="og-image.svg"/>
+  <meta property="og:type" content="website"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="ArchForge"/>
+  <meta name="twitter:description" content="60+ system design patterns with AI/LLM coverage and an interactive capacity planner."/>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #07070f;
+      --bg2: #0d0d1f;
+      --bg3: #12122a;
+      --card: rgba(255,255,255,0.030);
+      --card-hover: rgba(255,255,255,0.055);
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(99,102,241,0.45);
+      --text: #f1f5f9;
+      --muted: #64748b;
+      --subtle: #94a3b8;
+      --indigo: #6366f1;
+      --purple: #8b5cf6;
+      --cyan: #06b6d4;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --font: 'Inter', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 64px;
+      background: rgba(7,7,15,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text);
+      font-size: 1.1rem; font-weight: 700;
+    }
+    .nav-logo img { width: 30px; height: 30px; }
+    .nav-logo span { background: linear-gradient(135deg, var(--indigo), var(--purple), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none;
+    }
+    .nav-links a {
+      color: var(--subtle); text-decoration: none; font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      color: white; border: none; padding: 0.5rem 1.25rem;
+      border-radius: 6px; font-family: var(--font); font-size: 0.875rem;
+      font-weight: 600; cursor: pointer; text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 80% 60% at 20% 40%, rgba(99,102,241,0.10) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 50% at 80% 60%, rgba(6,182,212,0.09) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 40% at 50% 10%, rgba(139,92,246,0.08) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.30);
+      color: #a5b4fc; font-size: 0.8rem; font-weight: 600;
+      padding: 0.35rem 1rem; border-radius: 99px; margin-bottom: 2rem;
+      letter-spacing: 0.03em;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--indigo);
+      box-shadow: 0 0 8px var(--indigo);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 800; line-height: 1.07;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .grad-text {
+      background: linear-gradient(135deg, var(--indigo) 0%, var(--purple) 45%, var(--cyan) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+      color: var(--subtle); max-width: 680px; margin-bottom: 2.5rem;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      color: white; border: none; padding: 0.8rem 2rem;
+      border-radius: 8px; font-family: var(--font); font-size: 1rem;
+      font-weight: 600; cursor: pointer; text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(99,102,241,0.30);
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { opacity: 0.92; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(99,102,241,0.40); }
+    .btn-secondary {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border-hover); padding: 0.8rem 2rem;
+      border-radius: 8px; font-family: var(--font); font-size: 1rem;
+      font-weight: 500; cursor: pointer; text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-secondary:hover { background: var(--card-hover); transform: translateY(-2px); }
+
+    /* STATS BAR */
+    .stats-bar {
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+    }
+    .stat {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 1.75rem 3.5rem;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-size: 2rem; font-weight: 800; line-height: 1;
+      background: linear-gradient(135deg, var(--indigo), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; letter-spacing: 0.04em; }
+
+    /* SECTION WRAPPER */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em;
+      color: var(--indigo); text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.75rem);
+      font-weight: 800; line-height: 1.15; letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .section-subtitle {
+      font-size: 1.05rem; color: var(--subtle); max-width: 640px;
+      margin-bottom: 3.5rem;
+    }
+
+    /* FEATURES GRID */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.25rem;
+    }
+    .feature-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.75rem;
+      transition: border-color 0.25s, background 0.25s, transform 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .feature-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--indigo), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .feature-card:hover { border-color: var(--border-hover); background: var(--card-hover); transform: translateY(-2px); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon {
+      font-size: 2rem; margin-bottom: 1rem; display: block;
+      filter: drop-shadow(0 0 12px rgba(99,102,241,0.4));
+    }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .feature-card p { font-size: 0.9rem; color: var(--subtle); line-height: 1.6; }
+    .feature-chip {
+      display: inline-flex; margin-top: 1rem;
+      font-size: 0.72rem; font-weight: 600; color: var(--indigo);
+      background: rgba(99,102,241,0.10); border: 1px solid rgba(99,102,241,0.20);
+      padding: 0.2rem 0.65rem; border-radius: 99px; letter-spacing: 0.04em;
+    }
+
+    /* PATTERN LIBRARY */
+    .pattern-controls {
+      display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2rem;
+    }
+    .search-bar {
+      position: relative; max-width: 480px;
+    }
+    .search-bar input {
+      width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-family: var(--font);
+      font-size: 0.95rem; outline: none; transition: border-color 0.2s;
+    }
+    .search-bar input::placeholder { color: var(--muted); }
+    .search-bar input:focus { border-color: var(--indigo); }
+    .search-icon {
+      position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%);
+      color: var(--muted); pointer-events: none; font-size: 1rem;
+    }
+    .filter-tabs {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .filter-btn {
+      padding: 0.4rem 1rem; border-radius: 99px; border: 1px solid var(--border);
+      background: transparent; color: var(--subtle); font-family: var(--font);
+      font-size: 0.82rem; font-weight: 500; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--indigo); color: var(--text); }
+    .filter-btn.active {
+      background: rgba(99,102,241,0.15); border-color: var(--indigo);
+      color: #a5b4fc; font-weight: 600;
+    }
+    .patterns-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .pattern-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem;
+      cursor: pointer; transition: all 0.22s;
+      display: flex; flex-direction: column;
+    }
+    .pattern-card:hover {
+      border-color: var(--border-hover);
+      background: var(--card-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(99,102,241,0.10);
+    }
+    .pattern-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 0.75rem; margin-bottom: 0.6rem;
+    }
+    .pattern-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .complexity-dots {
+      display: flex; gap: 3px; align-items: center; flex-shrink: 0;
+    }
+    .complexity-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--border);
+    }
+    .complexity-dot.filled { background: var(--indigo); }
+    .pattern-name { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .pattern-tagline { font-size: 0.82rem; color: var(--subtle); line-height: 1.5; flex-grow: 1; }
+    .pattern-cat-tag {
+      margin-top: 0.85rem; font-size: 0.7rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      padding: 0.2rem 0.6rem; border-radius: 4px;
+      display: inline-flex; align-self: flex-start;
+    }
+    .cat-infra   { background: rgba(99,102,241,0.12); color: #a5b4fc; }
+    .cat-data    { background: rgba(16,185,129,0.12); color: #6ee7b7; }
+    .cat-cache   { background: rgba(245,158,11,0.12); color: #fcd34d; }
+    .cat-scale   { background: rgba(6,182,212,0.12); color: #67e8f9; }
+    .cat-reliable{ background: rgba(139,92,246,0.12); color: #c4b5fd; }
+    .cat-api     { background: rgba(244,63,94,0.12); color: #fda4af; }
+    .cat-ai      { background: rgba(99,102,241,0.18); color: #818cf8; }
+    .cat-security{ background: rgba(245,158,11,0.18); color: #fbbf24; }
+    .pattern-count {
+      font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+      justify-content: center; align-items: center; padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #0f0f1e; border: 1px solid rgba(99,102,241,0.30);
+      border-radius: 16px; max-width: 640px; width: 100%;
+      max-height: 90vh; overflow-y: auto; padding: 2rem;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--subtle); width: 32px; height: 32px;
+      border-radius: 8px; cursor: pointer; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .modal-close:hover { border-color: var(--border-hover); color: var(--text); }
+    .modal h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .modal .tagline { color: var(--subtle); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .modal-section { margin-bottom: 1.25rem; }
+    .modal-section h4 { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--indigo); margin-bottom: 0.6rem; }
+    .modal-section p { font-size: 0.9rem; color: var(--subtle); line-height: 1.65; }
+    .modal ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .modal ul li {
+      font-size: 0.875rem; color: var(--subtle); padding-left: 1.25rem;
+      position: relative;
+    }
+    .modal ul li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 6px; height: 6px; border-radius: 50%; }
+    .modal .pros li::before { background: var(--emerald); }
+    .modal .cons li::before { background: var(--rose); }
+    .modal .when li::before { background: var(--indigo); }
+
+    /* CAPACITY CALCULATOR */
+    .calc-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; align-items: start;
+    }
+    @media (max-width: 768px) { .calc-grid { grid-template-columns: 1fr; } }
+    .calc-inputs { display: flex; flex-direction: column; gap: 1.5rem; }
+    .calc-field { display: flex; flex-direction: column; gap: 0.5rem; }
+    .calc-field label {
+      font-size: 0.85rem; font-weight: 600; color: var(--subtle);
+      display: flex; justify-content: space-between;
+    }
+    .calc-field label span {
+      color: var(--text); font-family: var(--mono); font-size: 0.82rem;
+      background: rgba(99,102,241,0.10); padding: 0.1rem 0.5rem; border-radius: 4px;
+    }
+    .calc-slider {
+      -webkit-appearance: none; width: 100%; height: 4px;
+      background: var(--border); border-radius: 2px; outline: none;
+      cursor: pointer;
+    }
+    .calc-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      cursor: pointer; box-shadow: 0 2px 8px rgba(99,102,241,0.50);
+      transition: transform 0.2s;
+    }
+    .calc-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+    .calc-results {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    .result-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem;
+    }
+    .result-card .result-label {
+      font-size: 0.78rem; color: var(--muted); font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.5rem;
+    }
+    .result-card .result-value {
+      font-size: 1.7rem; font-weight: 800; font-family: var(--mono);
+      line-height: 1;
+    }
+    .result-card .result-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+    .rv-rps { color: var(--indigo); }
+    .rv-peak { color: var(--purple); }
+    .rv-storage { color: var(--emerald); }
+    .rv-bw { color: var(--cyan); }
+    .rv-cache { color: var(--amber); }
+    .rv-db { color: var(--rose); }
+    .calc-note {
+      font-size: 0.8rem; color: var(--muted); margin-top: 1.5rem;
+      padding: 0.75rem 1rem; background: var(--card);
+      border: 1px solid var(--border); border-radius: 8px;
+    }
+
+    /* TEMPLATES */
+    .templates-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.25rem;
+    }
+    .template-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .template-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .template-header {
+      padding: 1.25rem 1.5rem 1rem;
+      background: linear-gradient(135deg, rgba(99,102,241,0.07), rgba(6,182,212,0.05));
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .template-icon { font-size: 1.75rem; }
+    .template-header h3 { font-size: 1rem; font-weight: 700; }
+    .template-header p { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
+    .template-body { padding: 1.25rem 1.5rem; }
+    .template-components {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem;
+    }
+    .tech-chip {
+      font-size: 0.72rem; font-weight: 600;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      color: var(--subtle); padding: 0.15rem 0.6rem; border-radius: 4px;
+    }
+    .template-metrics {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+    .tm { display: flex; flex-direction: column; }
+    .tm-label { font-size: 0.7rem; color: var(--muted); font-weight: 600; letter-spacing: 0.05em; }
+    .tm-val { font-size: 0.85rem; font-weight: 600; color: var(--text); font-family: var(--mono); }
+
+    /* AI SHOWCASE */
+    .ai-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+    .ai-card {
+      background: linear-gradient(135deg, rgba(99,102,241,0.06), rgba(139,92,246,0.04));
+      border: 1px solid rgba(99,102,241,0.20);
+      border-radius: 12px; padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .ai-card::after {
+      content: ''; position: absolute; bottom: 0; right: 0;
+      width: 100px; height: 100px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(139,92,246,0.12), transparent 70%);
+      pointer-events: none;
+    }
+    .ai-card:hover { border-color: rgba(139,92,246,0.45); transform: translateY(-2px); }
+    .ai-new-badge {
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: 0.65rem; font-weight: 800; letter-spacing: 0.08em;
+      color: #c4b5fd; background: rgba(139,92,246,0.20);
+      border: 1px solid rgba(139,92,246,0.35);
+      padding: 0.15rem 0.5rem; border-radius: 4px;
+    }
+    .ai-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .ai-card p { font-size: 0.85rem; color: var(--subtle); line-height: 1.6; margin-bottom: 1rem; }
+    .ai-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .ai-chip {
+      font-size: 0.7rem; font-weight: 600; color: #a5b4fc;
+      background: rgba(99,102,241,0.10); border: 1px solid rgba(99,102,241,0.20);
+      padding: 0.15rem 0.55rem; border-radius: 4px;
+    }
+
+    /* COMPARISON TABLE */
+    .comparison-wrapper { overflow-x: auto; }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    thead th {
+      padding: 0.85rem 1.25rem; text-align: left; font-weight: 700;
+      font-size: 0.82rem; letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--border); color: var(--subtle);
+      white-space: nowrap;
+    }
+    thead th:first-child { color: var(--muted); }
+    tbody td {
+      padding: 0.85rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: top;
+    }
+    tbody tr:hover td { background: var(--card); }
+    .check { color: var(--emerald); font-size: 1rem; }
+    .cross { color: var(--rose); font-size: 1rem; }
+    .partial { color: var(--amber); font-size: 0.8rem; }
+    .hl { color: var(--text); font-weight: 600; }
+    .comp-archforge { color: #a5b4fc; font-weight: 700; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--bg2);
+      padding: 3rem 2rem;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1.5rem;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 10px; }
+    .footer-brand img { width: 28px; height: 28px; }
+    .footer-brand-name { font-weight: 700; font-size: 1rem; color: var(--text); }
+    .footer-tagline { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+    .footer-links {
+      display: flex; gap: 2rem; list-style: none;
+    }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-bottom {
+      max-width: 1200px; margin: 1.5rem auto 0;
+      padding-top: 1.5rem; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 0.5rem;
+    }
+    .footer-bottom p { font-size: 0.78rem; color: var(--muted); }
+    .footer-bottom a { color: var(--indigo); text-decoration: none; }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      .stat { padding: 1.25rem 1.5rem; }
+      .nav-links { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+    }
+
+    /* MISC */
+    .divider {
+      width: 48px; height: 3px; border-radius: 2px;
+      background: linear-gradient(90deg, var(--indigo), var(--cyan));
+      margin-bottom: 1.5rem;
+    }
+    .empty-state {
+      text-align: center; color: var(--muted);
+      padding: 4rem 2rem; font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <img src="assets/logo.svg" alt="ArchForge logo"/>
+    <span>ArchForge</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#patterns">Patterns</a></li>
+    <li><a href="#calculator">Calculator</a></li>
+    <li><a href="#templates">Templates</a></li>
+    <li><a href="#ai-systems">AI Systems</a></li>
+    <li><a href="#compare">Compare</a></li>
+  </ul>
+  <a class="nav-cta" href="https://github.com/sunilgentyala/archforge" target="_blank">GitHub</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge" style="position:relative">
+    <div class="hero-badge-dot"></div>
+    Open Source &amp; Free Forever
+  </div>
+  <h1>
+    The system design<br/>
+    workbench you<br/>
+    <span class="grad-text">actually need</span>
+  </h1>
+  <p>
+    Static primers get you started. ArchForge gets you hired and keeps you sharp.
+    60+ interactive patterns, a real-time capacity planner, AI/LLM architecture blueprints,
+    and architecture templates you can use in your next interview or production system.
+  </p>
+  <div class="hero-actions">
+    <a class="btn-primary" href="#patterns">
+      <span>Explore Patterns</span>
+      <span>&#8594;</span>
+    </a>
+    <a class="btn-secondary" href="#calculator">
+      <span>&#9881;</span>
+      <span>Capacity Calculator</span>
+    </a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num">60+</div>
+    <div class="stat-label">DESIGN PATTERNS</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">8</div>
+    <div class="stat-label">CATEGORIES</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">7</div>
+    <div class="stat-label">AI/LLM PATTERNS</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">6</div>
+    <div class="stat-label">INTERVIEW TEMPLATES</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">100%</div>
+    <div class="stat-label">FREE &amp; OPEN SOURCE</div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features" style="background: var(--bg2)">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Why ArchForge</div>
+      <div class="divider"></div>
+      <h2 class="section-title">Built for how engineers<br/>actually learn systems</h2>
+      <p class="section-subtitle">
+        The system design primer is great reading. ArchForge is where you come when you
+        need to think, practice, and design for real.
+      </p>
+    </div>
+    <div class="features-grid reveal">
+      <div class="feature-card">
+        <span class="feature-icon">&#128203;</span>
+        <h3>60+ Interactive Pattern Cards</h3>
+        <p>Every pattern includes when to use it, what you give up, complexity rating, and which patterns it pairs with. Not just a definition but a decision framework.</p>
+        <span class="feature-chip">PATTERN LIBRARY</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">&#128200;</span>
+        <h3>Real-Time Capacity Calculator</h3>
+        <p>Slide your DAU, requests, and data shape. Get instant estimates for RPS, peak load, storage growth, bandwidth, and cache size. No more back-of-napkin guessing.</p>
+        <span class="feature-chip">CAPACITY PLANNING</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">&#129302;</span>
+        <h3>AI and LLM Architecture Patterns</h3>
+        <p>RAG pipelines, vector database integration, LLM serving at scale, multi-agent orchestration. Patterns that did not exist when the primer was written.</p>
+        <span class="feature-chip">AI / ML SYSTEMS</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">&#128736;</span>
+        <h3>Copy-Ready Architecture Templates</h3>
+        <p>Six fully worked system designs from URL shorteners to ride-sharing apps. Each one includes component list, data models, scale targets, and known trade-offs.</p>
+        <span class="feature-chip">INTERVIEW READY</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">&#9878;</span>
+        <h3>Cloud-Native and Edge Patterns</h3>
+        <p>Kubernetes operators, serverless functions, edge computing, service meshes. The patterns production teams actually argue about in architecture reviews.</p>
+        <span class="feature-chip">MODERN STACK</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">&#9878;&#65039;</span>
+        <h3>Head-to-Head Comparison Tables</h3>
+        <p>SQL vs NoSQL, REST vs gRPC vs GraphQL, Redis vs Memcached. Visual matrices with quantified trade-offs so you can argue a choice, not just state one.</p>
+        <span class="feature-chip">COMPARISON MODE</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PATTERN LIBRARY -->
+<section id="patterns">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Pattern Library</div>
+      <div class="divider"></div>
+      <h2 class="section-title">60+ patterns, organized<br/>by what you need to decide</h2>
+      <p class="section-subtitle">
+        Filter by category or search by name. Click any card for full details including
+        trade-offs, when to use it, and related patterns.
+      </p>
+    </div>
+    <div class="pattern-controls reveal">
+      <div class="search-bar">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" id="pattern-search" placeholder="Search patterns..." oninput="renderPatterns()"/>
+      </div>
+      <div class="filter-tabs" id="filter-tabs">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+    <p class="pattern-count" id="pattern-count"></p>
+    <div class="patterns-grid" id="patterns-grid">
+      <!-- Generated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- CAPACITY CALCULATOR -->
+<section id="calculator" style="background: var(--bg2)">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Capacity Planner</div>
+      <div class="divider"></div>
+      <h2 class="section-title">Estimate any system<br/>before you design it</h2>
+      <p class="section-subtitle">
+        Adjust the sliders to match your system profile. The numbers update live so you
+        can see how a 10x growth in users changes your infrastructure requirements.
+      </p>
+    </div>
+    <div class="calc-grid reveal">
+      <div class="calc-inputs">
+        <div class="calc-field">
+          <label>Daily Active Users <span id="lbl-dau">10 M</span></label>
+          <input class="calc-slider" type="range" id="sl-dau" min="1" max="1000" value="10" oninput="updateCalc()"/>
+        </div>
+        <div class="calc-field">
+          <label>Avg Requests Per User / Day <span id="lbl-req">50</span></label>
+          <input class="calc-slider" type="range" id="sl-req" min="1" max="500" value="50" oninput="updateCalc()"/>
+        </div>
+        <div class="calc-field">
+          <label>Avg Request / Response Size <span id="lbl-size">10 KB</span></label>
+          <input class="calc-slider" type="range" id="sl-size" min="1" max="500" value="10" oninput="updateCalc()"/>
+        </div>
+        <div class="calc-field">
+          <label>Storage Per User / Day <span id="lbl-store">2 KB</span></label>
+          <input class="calc-slider" type="range" id="sl-store" min="1" max="1000" value="2" oninput="updateCalc()"/>
+        </div>
+        <div class="calc-field">
+          <label>Data Retention (Years) <span id="lbl-ret">5</span></label>
+          <input class="calc-slider" type="range" id="sl-ret" min="1" max="20" value="5" oninput="updateCalc()"/>
+        </div>
+        <div class="calc-note">
+          Peak multiplier is set to 3x average. Assumes 10% hot data for cache sizing
+          and 100 ms average query time for DB connections. Adjust for your system.
+        </div>
+      </div>
+      <div>
+        <div class="calc-results">
+          <div class="result-card">
+            <div class="result-label">Average RPS</div>
+            <div class="result-value rv-rps" id="r-rps">5,787</div>
+            <div class="result-sub">requests / second</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Peak RPS</div>
+            <div class="result-value rv-peak" id="r-peak">17,361</div>
+            <div class="result-sub">3x average burst</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Daily Storage</div>
+            <div class="result-value rv-storage" id="r-store">19.1 GB</div>
+            <div class="result-sub">new data per day</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Total Storage</div>
+            <div class="result-value rv-bw" id="r-total">34.9 TB</div>
+            <div class="result-sub" id="r-ret-label">over 5 years</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Peak Bandwidth</div>
+            <div class="result-value rv-cache" id="r-bw">165.5 MB/s</div>
+            <div class="result-sub">at peak RPS</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Cache Size</div>
+            <div class="result-value rv-db" id="r-cache">3.5 TB</div>
+            <div class="result-sub">10% hot data</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMPLATES -->
+<section id="templates">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Architecture Templates</div>
+      <div class="divider"></div>
+      <h2 class="section-title">Walk into your next design<br/>interview with a plan</h2>
+      <p class="section-subtitle">
+        Six fully worked system designs with component breakdowns, data models,
+        scale targets, and the specific trade-offs you should mention out loud.
+      </p>
+    </div>
+    <div class="templates-grid reveal" id="templates-grid">
+      <!-- Generated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- AI SYSTEMS -->
+<section id="ai-systems" style="background: var(--bg2)">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">AI / ML Architecture</div>
+      <div class="divider"></div>
+      <h2 class="section-title">Patterns that did not exist<br/>in 2020 but define 2026</h2>
+      <p class="section-subtitle">
+        ArchForge is the only free, open-source reference that covers production AI infrastructure patterns
+        at the same depth as classic distributed systems patterns.
+      </p>
+    </div>
+    <div class="ai-grid reveal" id="ai-grid">
+      <!-- Generated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="compare">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Why Switch</div>
+      <div class="divider"></div>
+      <h2 class="section-title">See how ArchForge compares<br/>to what you know</h2>
+      <p class="section-subtitle">
+        This is not a knock on other resources. Each one serves a purpose.
+        This table shows you where ArchForge fills the gaps.
+      </p>
+    </div>
+    <div class="comparison-wrapper reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="comp-archforge">ArchForge</th>
+            <th>System Design Primer</th>
+            <th>ByteByteGo</th>
+            <th>Grokking</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="hl">AI / LLM Architecture Patterns</td>
+            <td><span class="check">&#10003;</span> 7 patterns</td>
+            <td><span class="cross">&#10007;</span> None</td>
+            <td><span class="partial">Partial</span></td>
+            <td><span class="cross">&#10007;</span> None</td>
+          </tr>
+          <tr>
+            <td class="hl">Interactive Capacity Calculator</td>
+            <td><span class="check">&#10003;</span> Built-in</td>
+            <td><span class="cross">&#10007;</span> Static tables</td>
+            <td><span class="cross">&#10007;</span></td>
+            <td><span class="cross">&#10007;</span></td>
+          </tr>
+          <tr>
+            <td class="hl">Total Patterns Covered</td>
+            <td><span class="check">&#10003;</span> 60+</td>
+            <td><span class="partial">~20</span></td>
+            <td><span class="check">&#10003;</span> Many</td>
+            <td><span class="partial">~15</span></td>
+          </tr>
+          <tr>
+            <td class="hl">Edge / Serverless Patterns</td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="cross">&#10007;</span></td>
+            <td><span class="partial">Partial</span></td>
+            <td><span class="cross">&#10007;</span></td>
+          </tr>
+          <tr>
+            <td class="hl">Vector Database Pattern</td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="cross">&#10007;</span></td>
+            <td><span class="partial">Partial</span></td>
+            <td><span class="cross">&#10007;</span></td>
+          </tr>
+          <tr>
+            <td class="hl">Architecture Templates</td>
+            <td><span class="check">&#10003;</span> 6 detailed</td>
+            <td><span class="partial">8 solutions</span></td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="check">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td class="hl">Completely Free</td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="partial">Freemium</span></td>
+            <td><span class="cross">&#10007;</span> Paid</td>
+          </tr>
+          <tr>
+            <td class="hl">Open Source</td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="cross">&#10007;</span></td>
+            <td><span class="cross">&#10007;</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">
+        <img src="assets/logo.svg" alt="ArchForge"/>
+        <div>
+          <div class="footer-brand-name">ArchForge</div>
+          <div class="footer-tagline">The Modern System Design Workbench</div>
+        </div>
+      </div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#patterns">Patterns</a></li>
+      <li><a href="#calculator">Calculator</a></li>
+      <li><a href="#templates">Templates</a></li>
+      <li><a href="https://github.com/sunilgentyala/archforge" target="_blank">GitHub</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <p>Built by <a href="https://github.com/sunilgentyala" target="_blank">Sunil Gentyala</a>. MIT License. Contributions welcome.</p>
+    <p style="color: var(--muted); font-size: 0.75rem;">&#9998; Something missing? Open an issue on GitHub.</p>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="document.getElementById('modal-overlay').classList.remove('open')">&#10005;</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+
+const CATEGORIES = [
+  { id: 'all',      label: 'All',          icon: '' },
+  { id: 'infra',    label: 'Infrastructure', icon: '' },
+  { id: 'data',     label: 'Data Storage',   icon: '' },
+  { id: 'cache',    label: 'Caching',        icon: '' },
+  { id: 'scale',    label: 'Scalability',    icon: '' },
+  { id: 'reliable', label: 'Reliability',    icon: '' },
+  { id: 'api',      label: 'API & Messaging',icon: '' },
+  { id: 'ai',       label: 'AI / ML',        icon: '' },
+  { id: 'security', label: 'Security',       icon: '' },
+];
+
+const PATTERNS = [
+  // INFRASTRUCTURE
+  { id:'load-balancer', cat:'infra', icon:'⚖️', name:'Load Balancer', tag:'Distribute traffic across a fleet of servers', desc:'Routes requests using Round Robin, Least Connections, IP Hash, or Weighted algorithms. Can operate at L4 (TCP) or L7 (HTTP).', when:['Traffic exceeds a single server','Zero-downtime rolling deploys needed','You need health-check-based failover'], pros:['Eliminates single points of failure','Enables horizontal scaling','Supports health checks and automatic failover'], cons:['Adds a network hop and latency','Session affinity requires sticky sessions or external session store','The load balancer itself can become a SPOF unless clustered'], complexity:2 },
+  { id:'cdn', cat:'infra', icon:'🌐', name:'Content Delivery Network', tag:'Serve static and dynamic content from edge locations worldwide', desc:'Caches assets at geographically distributed PoPs. Reduces origin load, cuts latency for global users, and absorbs DDoS at scale.', when:['Global users need low-latency access to assets','Origin bandwidth costs are high','You need DDoS absorption'], pros:['Sub-20ms latency for cached content','Offloads 80-95% of traffic from origin','Built-in TLS termination'], cons:['Cache invalidation is slow and sometimes expensive','Dynamic personalized content cannot be cached easily','Added cost per GB transferred'], complexity:2 },
+  { id:'api-gateway', cat:'infra', icon:'🚪', name:'API Gateway', tag:'Single entry point for all client requests', desc:'Handles auth, rate limiting, request routing, SSL termination, and logging before requests reach your services. Kong, AWS API GW, and Envoy are common choices.', when:['Microservices need a unified public interface','You need centralized auth and rate limiting','Different clients need different protocol translations'], pros:['Decouples clients from internal topology','Enforces security policies in one place','Simplifies client-side logic'], cons:['Gateway becomes a critical path single point','Can add 1-5ms latency per hop','Complex routing rules are hard to test'], complexity:3 },
+  { id:'service-mesh', cat:'infra', icon:'🕸️', name:'Service Mesh', tag:'Handle inter-service networking transparently', desc:'A dedicated infrastructure layer (Istio, Linkerd, Consul Connect) that handles retries, circuit breaking, mTLS, and observability between services via sidecar proxies.', when:['Dozens of microservices with complex dependencies','You need mTLS between every service pair','Distributed tracing and traffic shaping are required'], pros:['Consistent security and observability without app changes','Fine-grained traffic control (canary, dark launch)','Automatic certificate rotation'], cons:['Sidecar proxies add memory and CPU overhead','Steep learning curve, especially Istio','Debugging becomes harder with another layer'], complexity:5 },
+  { id:'reverse-proxy', cat:'infra', icon:'🔄', name:'Reverse Proxy', tag:'Intercept and forward requests on behalf of backend servers', desc:'Sits in front of servers to handle caching, compression, SSL offloading, and routing. Nginx and HAProxy are the workhorses here.', when:['You need SSL termination before app servers','Caching common responses at the edge','Hiding internal network topology from clients'], pros:['Security layer between internet and services','Zero-code SSL handling','Easy to add caching without touching app code'], cons:['Another component to operate and monitor','Misconfiguration can block all traffic','Does not handle auth by default'], complexity:2 },
+  { id:'dns-lb', cat:'infra', icon:'📡', name:'DNS Load Balancing', tag:'Route traffic across data centers at the DNS level', desc:'Returns different IP addresses per query, distributing load geographically. Works well with Anycast and GeoDNS routing policies.', when:['Multi-region active-active setup','Routing users to the nearest data center','Disaster recovery failover across regions'], pros:['Works across clouds and data centers','No central proxy to fail','Geographic routing built in'], cons:['DNS TTL creates slow failover (minutes, not seconds)','Clients cache DNS, so changes take time to propagate','Does not do health checks natively without smart DNS'], complexity:2 },
+  { id:'edge-computing', cat:'infra', icon:'⚡', name:'Edge Computing', tag:'Run compute at network edge nodes close to users', desc:'Deploy compute, logic, and data caching at CDN PoPs or IoT gateways. Cloudflare Workers, AWS Lambda@Edge, and Fastly Compute are the main platforms.', when:['Latency budget is under 50ms globally','Personalization or auth decisions at the edge','Reducing origin load on dynamic requests'], pros:['Sub-5ms execution close to users','Scales to millions of locations automatically','Reduces origin data transfer costs'], cons:['Constrained runtime environments (CPU, memory, duration limits)','Limited access to databases from edge nodes','Cold start latency on first request'], complexity:3 },
+  { id:'containers', cat:'infra', icon:'📦', name:'Container Orchestration', tag:'Manage containerized workloads at scale with Kubernetes', desc:'Kubernetes schedules pods across nodes, handles rolling updates, auto-scaling, self-healing, and service discovery. EKS, GKE, and AKS wrap it as a managed service.', when:['More than a dozen microservices to manage','Need automated rollouts and rollbacks','Want declarative infrastructure-as-code deployment'], pros:['Self-healing with automatic pod restart','Horizontal pod autoscaling out of the box','Portable across clouds'], cons:['Steep learning curve, complex YAML surface area','Operational overhead unless using managed K8s','Resource overhead from control plane components'], complexity:5 },
+  { id:'serverless', cat:'infra', icon:'☁️', name:'Serverless Functions', tag:'Event-driven compute with zero infrastructure management', desc:'Functions execute on demand, scale to zero, and bill per invocation. AWS Lambda, Azure Functions, and Google Cloud Run are the major options.', when:['Spiky or unpredictable workloads','Glue code between managed services','APIs with low to moderate sustained traffic'], pros:['Zero servers to manage or patch','Automatic scaling from zero to massive','Pay only for actual execution time'], cons:['Cold starts add 100ms-1s latency (language dependent)','15-minute execution limit on most platforms','Harder to debug than long-running processes'], complexity:2 },
+  { id:'service-discovery', cat:'infra', icon:'🔍', name:'Service Discovery', tag:'Let services find each other dynamically without hard-coded IPs', desc:'Services register on startup and deregister on shutdown. Clients query a registry (Consul, etcd, K8s DNS) instead of static config files.', when:['Services scale in and out dynamically','Multiple environments share the same code','You want health-check-gated routing'], pros:['No manual IP or endpoint management','Works with auto-scaling and rolling deploys','Health checks prevent traffic to unhealthy instances'], cons:['Registry is now a critical dependency','Eventual consistency can lead to stale entries','Adds a lookup round trip per connection'], complexity:3 },
+
+  // DATA STORAGE
+  { id:'master-replica', cat:'data', icon:'🗄️', name:'Master-Replica Replication', tag:'Scale reads by distributing queries across replica nodes', desc:'One primary accepts writes and fans out to replicas that serve reads. MySQL, PostgreSQL, and MongoDB all support this natively.', when:['Read traffic is 5x+ higher than writes','Reporting workloads would saturate the primary','You need a hot standby for failover'], pros:['Linear read scaling with replica count','Replicas double as disaster recovery backups','Zero write latency impact for simple queries'], cons:['Replication lag means replicas can serve stale data','Writes are still bottlenecked to the primary','Promoting a replica requires careful coordination'], complexity:3 },
+  { id:'multi-master', cat:'data', icon:'🗂️', name:'Multi-Master Replication', tag:'Accept writes on any node to eliminate the primary write bottleneck', desc:'Every node can accept writes. Used in CockroachDB, Cassandra, DynamoDB, and MySQL Group Replication. Conflicts must be resolved by timestamp, version vector, or application logic.', when:['Write throughput exceeds a single node','Multi-region active-active writes needed','High availability with no single write point of failure'], pros:['Writes scale horizontally','Survives loss of any single node','Geographic write locality'], cons:['Conflict resolution is complex and error-prone','Eventual consistency requires careful application design','Harder to reason about than primary-replica'], complexity:5 },
+  { id:'sharding', cat:'data', icon:'🔧', name:'Horizontal Sharding', tag:'Partition data across nodes by a shard key', desc:'Split a dataset by a key (user ID, hash, range, geography) across multiple DB nodes so each node owns a subset. MongoDB, Cassandra, and Redis Cluster do this automatically.', when:['Single node cannot hold all data in memory or disk','Write throughput exceeds one node','Data has a natural partition key like tenant or user'], pros:['Scales both storage and write throughput','Each shard is small and fast','Reduces blast radius of hardware failures'], cons:['Cross-shard queries are expensive or impossible','Re-sharding live traffic is painful','Hotspot shards can defeat the purpose'], complexity:4 },
+  { id:'federation', cat:'data', icon:'🔗', name:'Database Federation', tag:'Split a monolith database by functional domain', desc:'Instead of one giant database, each product domain (users, orders, payments) gets its own database. Cross-domain joins are replaced with application-level joins or async events.', when:['A monolith database is a team coordination bottleneck','Different domains have wildly different schema change rates','You need independent deployment per domain'], pros:['Teams own their own schema without coordination','Smaller databases are faster to backup and restore','Independent scaling per domain'], cons:['Cross-domain queries require service-to-service calls','Distributed transactions become sagas','Data consistency across domains requires careful design'], complexity:3 },
+  { id:'connection-pool', cat:'data', icon:'🔌', name:'Connection Pooling', tag:'Reuse database connections to avoid per-request setup overhead', desc:'Maintain a warm pool of authenticated connections. PgBouncer for Postgres, ProxySQL for MySQL, and built-in pooling in ORMs keep connection overhead off your hot path.', when:['Per-request DB connections saturate the DB host','Serverless functions open connections at burst scale','Connection setup latency is measurable'], pros:['Eliminates TCP + auth overhead per query','Limits max concurrent connections to DB','PgBouncer adds transaction-mode pooling at near zero latency'], cons:['Misconfigured pool size causes timeouts or starvation','Connection state must be reset between borrowers','Adds an extra process to monitor'], complexity:2 },
+  { id:'timeseries', cat:'data', icon:'📈', name:'Time-Series Database', tag:'Store and query append-only time-stamped metrics efficiently', desc:'Purpose-built databases (InfluxDB, TimescaleDB, Prometheus, ClickHouse) compress numeric series 10-100x better than relational DBs and optimize for time-range aggregations.', when:['You store metrics, logs, or IoT sensor readings','Queries are always time-bounded (last 7 days)','Cardinality of label combinations is bounded'], pros:['10-100x better compression than row-based storage','Native rollup, downsampling, and retention policies','Ingest millions of data points per second on modest hardware'], cons:['Not suited for relational joins','High cardinality metrics blow up index memory','Each product has different query language'], complexity:3 },
+  { id:'graph-db', cat:'data', icon:'🕸️', name:'Graph Database', tag:'Model and query relationship-heavy data natively', desc:'Nodes and edges with typed relationships. Neo4j, Amazon Neptune, and ArangoDB excel at traversals that would require many JOIN levels in SQL.', when:['Queries traverse relationships 3+ levels deep','Fraud detection across networks of entities','Recommendation engines based on social graph'], pros:['Deep traversals in milliseconds vs minutes in SQL','Schema-flexible for evolving relationship types','Cypher and Gremlin are expressive for graph queries'], cons:['Poor at aggregations and bulk operations','Less mature ecosystem than relational DBs','Hard to horizontally scale graph traversals'], complexity:4 },
+  { id:'vector-db', cat:'data', icon:'🧠', name:'Vector Database', tag:'Store and search high-dimensional embeddings for AI features', desc:'Indexes float vectors for approximate nearest-neighbor search. Pinecone, Weaviate, Chroma, pgvector, and Qdrant are the main players. Essential for RAG pipelines and semantic search.', when:['Semantic search over documents or media','RAG pipelines that retrieve context for LLMs','Recommendation by content similarity'], pros:['ANN search returns similar vectors in milliseconds','Supports hybrid search: keyword + semantic','Integrates directly with embedding model outputs'], cons:['Approximate results, not exact','Index rebuild is expensive at billion-vector scale','Metadata filtering varies by implementation'], complexity:3 },
+  { id:'data-lake', cat:'data', icon:'🌊', name:'Data Lake', tag:'Store raw data at petabyte scale for future analysis', desc:'Raw files (Parquet, JSON, Avro) in object storage (S3, GCS, ADLS). Schema is applied on read. Spark, Trino, Athena, and BigQuery query it in place.', when:['Data schema is not yet known at ingest time','Multiple teams consume the same raw data differently','Storage cost per GB must be as low as possible'], pros:['Near-zero cost per GB at object storage prices','Immutable raw data survives schema migrations','Decouples data producers from consumers'], cons:['Unmanaged lakes become data swamps with unknown quality','Query performance is poor without partitioning','Governance and access control require extra tooling'], complexity:4 },
+  { id:'data-warehouse', cat:'data', icon:'🏛️', name:'Data Warehouse', tag:'Columnar OLAP storage optimized for analytical queries', desc:'Structured, cleaned data organized for fast aggregation across millions or billions of rows. Snowflake, BigQuery, Redshift, and Databricks dominate here.', when:['BI dashboards and analytical SQL queries','Data must be clean, structured, and trusted','Marketing, finance, and product teams share the same data'], pros:['Columnar format compresses and queries 100x faster than row stores','Separation of compute and storage allows independent scaling','Built-in access control and audit logs'], cons:['ETL pipelines to load data add latency (T+1 to T+24h)','Expensive at scale: compute costs accumulate fast','Not suitable for transactional writes'], complexity:3 },
+  { id:'wal', cat:'data', icon:'📝', name:'Write-Ahead Log', tag:'Guarantee durability by logging changes before applying them', desc:'Every write goes to an append-only log first. On crash, the log replays to restore state. Used internally by PostgreSQL, MySQL, Kafka, and etcd.', when:['You need crash recovery guarantees','Building a custom storage engine or database','Implementing event sourcing or change data capture'], pros:['Atomic, durable writes with minimal I/O','Enables point-in-time recovery','Powers replication by shipping log entries'], cons:['Log must be fsynced to disk for real durability','Log compaction adds operational complexity','Large logs slow down crash recovery time'], complexity:4 },
+  { id:'mvcc', cat:'data', icon:'🔀', name:'MVCC', tag:'Snapshot isolation without blocking reads or writes', desc:'Multi-Version Concurrency Control keeps old row versions so readers never block writers. PostgreSQL, MySQL InnoDB, and CockroachDB all use it.', when:['Long-running reads (reports) must not block short writes','You want repeatable reads without locks','High concurrency with mixed read-write traffic'], pros:['Reads never block writes; writers never block reads','Enables time-travel queries in some implementations','Higher throughput than pessimistic locking'], cons:['Vacuuming old versions adds background I/O','Write conflicts still abort one transaction','Table bloat under heavy write+vacuum mismatch'], complexity:4 },
+
+  // CACHING
+  { id:'cache-aside', cat:'cache', icon:'📋', name:'Cache-Aside (Lazy Loading)', tag:'Load data into cache only when requested', desc:'App checks cache first. On miss, reads from DB, stores result in cache, returns to caller. Redis and Memcached are the standard choices.', when:['Read-heavy workloads with predictable hot keys','Cache should only hold data that is actually read','Simplicity is more important than cache warmth'], pros:['Only caches what is actually needed','Cache failures are non-fatal (just slower)','Simple to implement in any language'], cons:['First request after a miss hits the DB directly','Cache and DB can drift if invalidation is missed','Cold start after cache flush causes thundering herd'], complexity:1 },
+  { id:'write-through', cat:'cache', icon:'✍️', name:'Write-Through Cache', tag:'Write to cache and DB synchronously on every mutation', desc:'Every write updates the cache and the DB before returning to the caller. Ensures cache is never stale at the cost of write latency.', when:['Read-after-write consistency is required','Write frequency is low, read frequency is high','You cannot tolerate serving stale data'], pros:['Cache always consistent with DB after writes','Simple failure model: both succeed or both fail','No stale data window'], cons:['Every write touches both cache and DB, doubling write latency','Writes of data that is never read still warm the cache','Harder to implement atomically across systems'], complexity:2 },
+  { id:'write-behind', cat:'cache', icon:'📤', name:'Write-Behind Cache', tag:'Write to cache immediately and persist to DB asynchronously', desc:'Mutations hit the cache immediately and are flushed to DB in batches or after a delay. Optimizes write throughput at the cost of durability.', when:['Write throughput exceeds DB capacity','Batch writes to DB are cheaper than individual ones','Brief data loss on crash is acceptable'], pros:['Write latency is as fast as cache latency','DB gets writes in optimized batches','Smooths write spikes before they hit the DB'], cons:['Data in cache but not yet in DB is lost on crash','Complex to implement correctly with acknowledgment','Error handling for failed DB flushes is tricky'], complexity:4 },
+  { id:'read-through', cat:'cache', icon:'📥', name:'Read-Through Cache', tag:'Delegate DB reads to the cache layer transparently', desc:'Cache handles the DB fallback itself when a miss occurs. The application only ever talks to the cache. Transparent caching proxies implement this.', when:['You want to hide DB access from application code','Multiple services share the same cache layer','Cache and DB loading logic should be centralized'], pros:['App code talks to one data source','Cache layer can optimize DB access patterns','Consistent miss handling across all callers'], cons:['Cache layer must know the data schema','More complex cache layer to operate','Cache misses still add one round trip overhead'], complexity:3 },
+  { id:'cache-invalidation', cat:'cache', icon:'♻️', name:'Cache Invalidation Strategies', tag:'Choose how and when to expire or evict cached entries', desc:'TTL-based (expire after N seconds), event-based (invalidate on write), and version-based (cache with version key) are the three main approaches.', when:['Data changes unpredictably and staleness matters','You need to reason about cache freshness explicitly','Different data has different staleness tolerances'], pros:['TTL is simple and works for most cases','Event-based invalidation keeps cache fresh on write','Version keys make stale reads impossible'], cons:['TTL-based means you serve stale data until expiry','Event-based requires event pipeline reliability','Version key explosion can exhaust cache memory'], complexity:3 },
+  { id:'distributed-cache', cat:'cache', icon:'🏗️', name:'Distributed Cache', tag:'Scale cache horizontally with consistent hashing', desc:'Redis Cluster or Memcached with consistent hashing distributes keys across cache nodes. Handles node failure by remapping only a fraction of keys.', when:['Single cache node cannot hold the working set in memory','Cache availability is required during node failures','You need cache-level sharding for throughput'], pros:['Horizontal scale of memory and throughput','Consistent hashing minimizes key remapping on resharding','Redis Cluster adds automatic failover'], cons:['Cross-slot operations are not supported in Redis Cluster','More complex to operate than standalone Redis','Network partition can split cluster'], complexity:4 },
+  { id:'local-cache', cat:'cache', icon:'💾', name:'In-Process Memory Cache', tag:'Cache data inside the application process for near-zero latency', desc:'Dictionaries, LRU maps, or libraries (Caffeine in Java, functools.cache in Python) hold hot data in the same process as the application.', when:['Sub-millisecond cache access is required','Data volume fits in application memory','Data is read-only or invalidated infrequently'], pros:['Zero network round trip: nanosecond access','No external dependency to operate','No serialization overhead'], cons:['Cache is per-process, not shared across instances','Memory pressure competes with application heap','Cache is lost on deploy or crash'], complexity:1 },
+  { id:'cdn-cache', cat:'cache', icon:'🌍', name:'CDN Cache Headers', tag:'Control CDN caching behavior with HTTP response headers', desc:'Cache-Control, Surrogate-Control, Vary, and ETag headers tell CDNs what to cache, for how long, and how to identify stale content.', when:['Static or semi-static content served through a CDN','You need fine-grained control over per-path TTLs','Authenticated content must not be shared across users'], pros:['Simple to implement with standard HTTP headers','CDN handles invalidation and revalidation automatically','Reduces origin load without any code changes'], cons:['Getting headers wrong causes over-caching or under-caching','Vary headers can multiply cache entries','Private headers require careful configuration to avoid leaks'], complexity:2 },
+
+  // SCALABILITY
+  { id:'horiz-scale', cat:'scale', icon:'↔️', name:'Horizontal Scaling', tag:'Add more servers instead of bigger servers', desc:'Run N identical stateless instances behind a load balancer. Session state lives in Redis, files in S3, so any instance handles any request.', when:['Traffic peaks are unpredictable','You want to scale cost-linearly with load','Deploying rolling updates without downtime'], pros:['Near-linear throughput scaling','Commodity hardware is cheaper than big servers','Failures affect only a fraction of capacity'], cons:['Application must be stateless or externalize state','Cost scales with instance count, not utilization','Coordination between instances requires distributed primitives'], complexity:2 },
+  { id:'vert-scale', cat:'scale', icon:'↕️', name:'Vertical Scaling', tag:'Add more CPU, RAM, or disk to a single server', desc:'Upgrade from a 4-core to 64-core machine. Simple to implement with no code changes. Works until you hit hardware limits or cost ceilings.', when:['Simplicity is more important than elasticity','Workload cannot be parallelized across instances','Early-stage systems before you know the real bottleneck'], pros:['Zero code changes required','Eliminates distributed systems complexity','Better performance for single-threaded or memory-heavy workloads'], cons:['Hard cap on how big one machine can get','Single point of failure with no redundancy','Cost per unit performance degrades at high end'], complexity:1 },
+  { id:'auto-scale', cat:'scale', icon:'⚙️', name:'Auto-Scaling Policies', tag:'Automatically add or remove capacity based on real-time metrics', desc:'Scale out when CPU > 70%, scale in when CPU < 30%. Use target tracking, step scaling, or predictive scaling policies. Works with ASGs, K8s HPA, and Cloud Run.', when:['Traffic spikes are predictable but vary by hour','Cost optimization requires scaling down off-peak','Failure handling requires automatic capacity replacement'], pros:['Optimal cost by paying for what you use','Handles load spikes without manual intervention','Self-healing: replaces failed instances automatically'], cons:['Scale-out latency (minutes) can mean you serve degraded traffic during spikes','Thrashing if thresholds are set too tight','Stateful services need drain periods before termination'], complexity:3 },
+  { id:'queue-leveling', cat:'scale', icon:'📬', name:'Queue-Based Load Leveling', tag:'Absorb traffic bursts with a queue between producer and consumer', desc:'Producers write to a queue (SQS, Kafka, RabbitMQ) at burst speed. Consumers process at steady pace. Queue absorbs the difference.', when:['Downstream processing is slower than upstream bursts','You can tolerate async processing delay','Job failures need retry without losing the message'], pros:['Decouples production speed from processing speed','Queue provides natural backpressure','Messages survive consumer crashes'], cons:['Introduces latency between event and processing','Queue depth can grow unboundedly without backpressure control','Consumer lag monitoring is required'], complexity:2 },
+  { id:'backpressure', cat:'scale', icon:'🔙', name:'Back-Pressure Pattern', tag:'Signal overload upstream so producers slow down', desc:'When a consumer is saturated, it pushes back on the producer to slow ingestion. TCP flow control and reactive streams implement this natively.', when:['Unbounded queues risk OOM on burst traffic','Producer and consumer should stay in equilibrium','Overload should cause slowdown, not failure'], pros:['Prevents cascading failures from queue overflow','Keeps system in a degraded but stable state','Signals the right layer to scale'], cons:['Requires coordination between producer and consumer','Can confuse clients expecting constant throughput','Hard to implement across service boundaries'], complexity:4 },
+  { id:'rate-limiting', cat:'scale', icon:'🚦', name:'Rate Limiting and Throttling', tag:'Cap request rate per client to protect services', desc:'Fixed window, sliding window, token bucket, and leaky bucket are the four algorithms. Implemented at the API gateway or in application middleware.', when:['Public APIs need abuse protection','Free-tier users must be capped below paid-tier','DDoS mitigation layer is needed before origin'], pros:['Prevents one client from starving others','Enables tiered pricing enforcement','Reduces blast radius of misbehaving clients'], cons:['Legitimate burst traffic gets throttled','Distributed rate limiting requires a shared counter (Redis)','Window boundaries create throttling edge cases'], complexity:2 },
+  { id:'bulkhead', cat:'scale', icon:'🚢', name:'Bulkhead Isolation', tag:'Partition resources so one tenant or feature cannot exhaust shared capacity', desc:'Assign separate thread pools, connections, or queues per caller, feature, or tenant. Borrowed from ship design where compartments limit flood damage.', when:['Multi-tenant systems where one tenant should not starve others','Critical paths must be isolated from low-priority work','You want predictable performance under partial failure'], pros:['Failures are contained to one compartment','SLA tiers can have dedicated resources','Easier to debug which component is causing slowdowns'], cons:['Resource fragmentation: idle pools waste capacity','More complex to configure and tune','Adds overhead for small, uniform workloads'], complexity:3 },
+  { id:'cell-arch', cat:'scale', icon:'🔲', name:'Cell-Based Architecture', tag:'Shard infrastructure into independent self-contained cells', desc:'Divide users into cells (1M users per cell). Each cell has its own DB, cache, and service instances. Failure affects only that cell. Used by Stripe, Amazon, and Notion.', when:['Blast radius of a database failure must be bounded','Regulatory data residency requirements per region','Teams own cells end-to-end for deployment independence'], pros:['Failure in one cell does not affect other cells','Cells can be routed by geography for latency and compliance','Independent cell deploy means smaller blast radius per release'], cons:['Cross-cell operations require complex routing or replication','More infrastructure to manage at the cell level','Cell sizing requires careful capacity planning upfront'], complexity:5 },
+
+  // RELIABILITY
+  { id:'circuit-breaker', cat:'reliable', icon:'🔌', name:'Circuit Breaker', tag:'Stop calling a failing dependency until it recovers', desc:'Tracks failure rate of outbound calls. When it exceeds a threshold, the breaker opens and returns fast errors instead of waiting for timeouts. After a cooldown, it probes with test requests.', when:['Calling external services that can fail or time out','Cascading failures from one slow service must be prevented','You want fast failure instead of thread starvation'], pros:['Prevents cascading failures across services','Fast failures reduce thread pool exhaustion','Gives downstream time to recover'], cons:['False positives trip the breaker when the downstream is fine','Requires careful calibration of thresholds and cooldown','State must be shared across instances for effectiveness'], complexity:3 },
+  { id:'retry-backoff', cat:'reliable', icon:'🔁', name:'Retry with Exponential Backoff', tag:'Retry transient failures with increasing delays and jitter', desc:'Retry 1 waits 1s, retry 2 waits 2s, retry 3 waits 4s. Add random jitter to prevent synchronized retries from all clients hammering a recovering service.', when:['Transient network failures or 503s are common','Idempotent operations can be safely retried','You want automatic recovery without manual intervention'], pros:['Handles transient failures transparently','Jitter prevents thundering herd on recovery','Works well with circuit breaker as a companion'], cons:['Non-idempotent operations must not be retried naively','Extended retry storms can delay user-facing responses','Log noise from expected retry failures'], complexity:2 },
+  { id:'saga', cat:'reliable', icon:'📖', name:'Saga Pattern', tag:'Implement distributed transactions as a sequence of local transactions', desc:'Each service completes its local transaction and publishes an event. If any step fails, compensating transactions undo previous steps. Choreography or orchestration styles.', when:['Transactions span multiple microservices','Two-phase commit is too slow or not supported','You need eventual consistency across service boundaries'], pros:['Works across services that own independent DBs','No distributed lock required','Each step is independently rollback-able'], cons:['Compensating transactions are complex to write and test','Partial failure leaves the system in an intermediate state','Hard to debug when steps fail asynchronously'], complexity:5 },
+  { id:'idempotency', cat:'reliable', icon:'🔂', name:'Idempotency Design', tag:'Make operations safe to retry without side effects', desc:'Assign an idempotency key to each request. On duplicate, return the cached result instead of executing again. Critical for payments, emails, and any state-changing action.', when:['Network failures may cause clients to retry requests','Duplicate processing would cause financial or data corruption','You build APIs that others call with retries'], pros:['Safe retries at every layer of the stack','Prevents duplicate charges, emails, or records','Enables at-least-once delivery with exactly-once semantics'], cons:['Requires key storage and lookup per request','Key expiry must be chosen carefully','Concurrent duplicates need distributed locking'], complexity:3 },
+  { id:'blue-green', cat:'reliable', icon:'🟦', name:'Blue-Green Deployment', tag:'Switch traffic to a new version with instant rollback capability', desc:'Maintain two identical environments. Deploy new version to inactive environment, run tests, then flip load balancer. Rollback is instant: flip back.', when:['Zero-downtime deployments are required','You need instant rollback on production issues','Database schema changes can be done in two steps'], pros:['Zero downtime cutover','Instant rollback without re-deploy','Full production test before traffic flip'], cons:['Double the infrastructure cost during deploy','Database migrations must be backward-compatible','State in flight during cutover must be handled'], complexity:3 },
+  { id:'canary', cat:'reliable', icon:'🐦', name:'Canary Release', tag:'Roll out changes to a small subset of users first', desc:'Send 5% of traffic to the new version. Watch error rates, latency, and business metrics. Gradually increase to 100% or roll back if metrics degrade.', when:['Risk of new version causing regressions is high','You want data-driven rollout decisions','A/B testing a UX change alongside a deploy'], pros:['Real production data before full rollout','Limits blast radius to a small user percentage','Metrics-driven rollout reduces human judgment error'], cons:['Two versions run simultaneously, complicating support','Database schema must support both versions during rollout','Requires routing infrastructure to split traffic precisely'], complexity:3 },
+
+  // API
+  { id:'rest', cat:'api', icon:'📡', name:'REST API Design', tag:'Resource-oriented API with stateless HTTP verbs', desc:'Resources modeled as URLs. GET/POST/PUT/DELETE map to CRUD. Stateless: each request carries all needed context. JSON is the default body format.', when:['Public APIs consumed by diverse clients','Simple CRUD semantics map cleanly to resources','Browser clients need to use the API directly'], pros:['HTTP caching works natively with correct headers','Universal tooling: Postman, OpenAPI, curl','Stateless servers are easy to scale'], cons:['Chatty APIs require many round trips for complex operations','Over-fetching: response includes fields the client did not need','Versioning strategies are inconsistent across the industry'], complexity:1 },
+  { id:'graphql', cat:'api', icon:'🔷', name:'GraphQL', tag:'Query language that lets clients specify exactly what data they need', desc:'Schema defines types and relationships. Clients write queries that request specific fields. Resolvers fetch data. Apollo, Relay, and Hasura are common implementations.', when:['Multiple client types need different data shapes from the same API','Mobile clients need to minimize payload size','Rapid frontend iteration without backend changes'], pros:['Eliminates over-fetching and under-fetching','Schema introspection enables powerful tooling','Federation enables multiple teams to extend a graph independently'], cons:['N+1 query problem requires DataLoader or batching','Query complexity analysis needed to prevent abuse','Caching is harder than REST without persistent queries'], complexity:3 },
+  { id:'grpc', cat:'api', icon:'⚡', name:'gRPC', tag:'High-performance binary RPC with strong typing via Protocol Buffers', desc:'Uses HTTP/2 multiplexing and Protocol Buffers binary serialization. 5-10x faster than REST+JSON. Supports streaming (unary, server, client, bidirectional).', when:['Internal microservice-to-microservice communication','Streaming data between services in real time','Polyglot services that share a strongly typed contract'], pros:['10x smaller payload and 5x faster than REST+JSON','Bidirectional streaming built in','Auto-generated type-safe clients in any language'], cons:['Binary format is not human-readable without tooling','Browser support requires gRPC-Web proxy','Proto schema evolution requires careful field numbering'], complexity:3 },
+  { id:'websocket', cat:'api', icon:'🔗', name:'WebSocket', tag:'Persistent bidirectional connection for real-time communication', desc:'Upgrades an HTTP connection to a full-duplex TCP channel. Server can push to client at any time. Used in chat, collaborative editing, live trading, and gaming.', when:['Server must push events to clients without polling','Low-latency bidirectional communication is required','Connection overhead of repeated HTTP would dominate'], pros:['Sub-millisecond message delivery after connection','Server push eliminates polling overhead','Works through most firewalls and proxies'], cons:['Stateful connections are hard to scale horizontally','Connection pools require sticky sessions or a message bus','Firewalls and middleboxes can drop idle WebSocket connections'], complexity:3 },
+  { id:'sse', cat:'api', icon:'📻', name:'Server-Sent Events', tag:'Unidirectional real-time push from server to browser over HTTP', desc:'Server sends a stream of text events on a persistent HTTP connection. Browsers reconnect automatically. Simpler than WebSocket when client-to-server push is not needed.', when:['Real-time feed updates where clients only receive data','Browser clients need streaming without WebSocket complexity','Live dashboards, news feeds, or notification streams'], pros:['Works over plain HTTP/1.1 with automatic reconnect','Browser handles reconnect and event ID tracking','No special proxy configuration needed'], cons:['Unidirectional only: client cannot push back','HTTP/1.1 has a 6 connection limit per host (solved with HTTP/2)','Not all proxies buffer SSE correctly'], complexity:2 },
+  { id:'message-queue', cat:'api', icon:'📬', name:'Message Queue', tag:'Async point-to-point messaging with delivery guarantees', desc:'Producer sends messages to a named queue. Each message is delivered to exactly one consumer. RabbitMQ, SQS, and Azure Service Bus are the main options.', when:['Work units must be processed exactly once','Producer and consumer speeds differ significantly','Job retries and dead letter queues are needed'], pros:['Decouples producer and consumer completely','At-least-once or exactly-once delivery depending on config','Dead letter queue captures poison messages for inspection'], cons:['Ordering guarantees require partitioning and careful design','Debugging message flow across queues is hard','Message schema evolution requires coordination'], complexity:2 },
+  { id:'event-streaming', cat:'api', icon:'🌊', name:'Event Streaming', tag:'High-throughput immutable event log with replay capability', desc:'Events are appended to partitioned, replicated log. Consumers maintain their own offset. Kafka, Kinesis, and Pulsar provide this. Consumers can replay from any point.', when:['Events must be replayed for new downstream consumers','Multiple consumers need to read the same events independently','Event ordering per key is required'], pros:['Any number of consumers read the same events without interference','Replay enables reprocessing with new logic','High throughput: millions of events per second'], cons:['At-least-once delivery requires idempotent consumers','Log compaction and retention policies need tuning','Kafka clusters are operationally heavy to self-host'], complexity:4 },
+  { id:'webhook', cat:'api', icon:'🪝', name:'Webhook Design', tag:'Push event notifications to external systems over HTTP', desc:'Your service POSTs to a registered callback URL when an event occurs. Stripe, GitHub, and Twilio all use this model to notify external applications.', when:['External systems need real-time event notification','Polling by external clients would create excessive API load','Partners integrate with your platform'], pros:['External systems get instant notification without polling','Works across organizational boundaries easily','Simple to implement with standard HTTP POST'], cons:['Delivery failure requires retry logic and dead letters','Webhook endpoints must be publicly reachable','Security requires HMAC signature verification on every event'], complexity:2 },
+
+  // AI / ML
+  { id:'llm-serving', cat:'ai', icon:'🤖', name:'LLM Serving Architecture', tag:'Serve large language models at low latency and high throughput', desc:'Route requests to vLLM, TGI, or TensorRT-LLM inference servers running on GPU hosts. Use KV cache reuse, continuous batching, and speculative decoding to maximize GPU utilization.', when:['Running open-weight LLMs like Llama, Mistral, or Qwen in production','Latency target is under 1s TTFT at high concurrency','You need multi-model routing or A/B serving'], pros:['Continuous batching multiplies throughput on shared GPU','KV cache reuse slashes repeated-prefix latency','Quantization (4-bit, 8-bit) cuts GPU memory 2-4x with minimal quality loss'], cons:['GPU cost is high per token vs API providers','Cold start for model loading is 30-120 seconds','Long context windows exhaust KV cache memory rapidly'], complexity:5 },
+  { id:'rag', cat:'ai', icon:'📚', name:'RAG Pipeline', tag:'Augment LLM answers with retrieved private knowledge', desc:'Chunk documents into overlapping windows, embed with a model, store in a vector DB. At query time: embed query, retrieve top-K chunks, inject into LLM prompt as context.', when:['LLM needs access to private or frequently changing data','Hallucination on factual queries is unacceptable','Data is too large to fit in a context window'], pros:['LLM can answer from up-to-date private documents','Reduces hallucination by grounding answers in retrieved text','No fine-tuning required: add new docs without retraining'], cons:['Retrieval quality is a ceiling on answer quality','Chunk size and overlap tuning is required','Long context retrieved in wrong order confuses the model'], complexity:3 },
+  { id:'feature-store', cat:'ai', icon:'🗂️', name:'Feature Store', tag:'Centralize ML feature computation and serving', desc:'Compute features once, store in an online store (Redis) for low-latency serving and an offline store (Parquet) for training. Feast, Tecton, and Vertex AI Feature Store are the main options.', when:['Features are shared across multiple ML models','Training-serving skew causes model quality degradation','Point-in-time correct training data is required'], pros:['Eliminates duplicate feature logic across teams','Training and serving use identical feature transformations','Point-in-time lookups prevent data leakage in training'], cons:['Another system to operate and keep in sync','Backfilling historical features is expensive','Increases latency if feature lookup is on the hot path'], complexity:4 },
+  { id:'ml-pipeline', cat:'ai', icon:'⚙️', name:'ML Training Pipeline', tag:'Reproducible, automated pipeline from data to deployed model', desc:'Orchestrate data validation, preprocessing, training, evaluation, and model registration. Kubeflow, MLflow, SageMaker Pipelines, and Vertex AI Pipelines are the major platforms.', when:['Models need regular retraining on new data','Multiple team members contribute to the same model lifecycle','You need audit trails for model versions and data used'], pros:['Automated retraining catches model drift early','Experiment tracking makes results reproducible','Registry enables rollback to a previous model version'], cons:['Pipeline infrastructure is significant upfront investment','Feature and model drift still require human monitoring','Complex orchestration makes debugging failures slow'], complexity:4 },
+  { id:'embedding-search', cat:'ai', icon:'🔎', name:'Embedding Search', tag:'Find semantically similar content using vector math', desc:'Encode text, images, or audio into float vectors. Use ANN algorithms (HNSW, IVF-PQ) to find the K nearest vectors in milliseconds. Powers semantic search, recommendations, and deduplication.', when:['Traditional keyword search returns poor results for natural language queries','Content recommendation needs semantic understanding','Deduplicating records that are similar but not identical'], pros:['Handles synonyms, paraphrasing, and multilingual queries natively','Embedding models improve over time without schema changes','Works for text, images, audio, and code'], cons:['Embedding model choice heavily impacts quality','ANN returns approximate results, not guaranteed top-K','Index rebuild at billion-vector scale is slow and expensive'], complexity:3 },
+  { id:'multi-agent', cat:'ai', icon:'👥', name:'Multi-Agent Orchestration', tag:'Coordinate specialized AI agents for complex tasks', desc:'An orchestrator LLM breaks tasks into sub-tasks and delegates to worker agents. Workers use tools, memory, and sub-agents. Results are merged back into a coherent output.', when:['Tasks require parallel sub-task execution by specialists','Single LLM context window is insufficient for the task','Different tools or datasets are needed for different subtasks'], pros:['Parallelism cuts end-to-end latency for independent sub-tasks','Specialist agents can be smaller and cheaper than one big model','Easier to test each agent in isolation'], cons:['Orchestration failures are hard to diagnose','Agent-to-agent communication cost grows quadratically','Non-deterministic routing makes integration testing complex'], complexity:5 },
+  { id:'model-ab', cat:'ai', icon:'🔬', name:'Model A/B Testing', tag:'Compare model versions on live traffic with statistical rigor', desc:'Route a percentage of production traffic to a challenger model. Collect business metrics (not just accuracy) over a sufficient sample size before deciding which model wins.', when:['A new model version might improve conversion or engagement','Retraining on new data could degrade existing behavior','You need evidence before a full model rollout'], pros:['Business metrics trump offline benchmark metrics','Gradual rollout limits risk of a regression','Shadow mode lets you test without affecting users first'], cons:['Statistical significance requires large traffic volumes','Metrics collection and analysis pipeline needed','Interference between A and B variants in personalization systems'], complexity:3 },
+
+  // SECURITY
+  { id:'zero-trust', cat:'security', icon:'🔒', name:'Zero Trust Architecture', tag:'Never trust, always verify - even on the internal network', desc:'Every request is authenticated and authorized regardless of network origin. mTLS between services, short-lived credentials, and least-privilege access at every layer.', when:['Corporate VPN is not sufficient for modern distributed teams','Internal services must not implicitly trust each other','Compliance requires verifiable access logs per resource'], pros:['Lateral movement after a breach is contained','Fine-grained audit trail per resource access','Works natively with cloud-native and remote-work setups'], cons:['Significant upfront PKI and identity infrastructure work','Slower request path due to per-request verification','Developer experience degrades without good tooling'], complexity:5 },
+  { id:'oauth', cat:'security', icon:'🔑', name:'OAuth 2.0 + PKCE Flow', tag:'Delegate authorization without sharing credentials', desc:'Authorization Code flow with PKCE for public clients. User authorizes at identity provider. Your app receives short-lived access token and long-lived refresh token.', when:['Third-party apps need access to your users data','Mobile or SPA clients cannot store a client secret','SSO across multiple services is required'], pros:['Users never share their credentials with your app','Tokens are scoped and revocable per client','Standard flow with mature libraries in every language'], cons:['Complexity: multiple redirect hops before access is granted','Token storage in browser requires careful XSS mitigation','Refresh token rotation requires persistent storage'], complexity:3 },
+  { id:'jwt', cat:'security', icon:'🎟️', name:'JWT Authentication', tag:'Stateless, self-contained token for API authentication', desc:'Server signs a JSON payload (claims: user ID, roles, expiry) with RS256 or HS256. Clients send the token in Authorization header. Server validates signature without a DB lookup.', when:['Stateless API servers that should not hit a session store','Microservices need to pass user identity downstream','Short-lived API access with embedded claims'], pros:['Stateless verification: no session store round trip','Claims are in the token, no extra lookup needed','Works across services and domains (CORS-friendly)'], cons:['Tokens cannot be revoked without a blocklist (denying the stateless benefit)','Signing secret compromise invalidates all tokens','JWT size grows with more claims, increasing request overhead'], complexity:2 },
+  { id:'secrets-mgmt', cat:'security', icon:'🗝️', name:'Secrets Management', tag:'Store and rotate credentials without ever hardcoding them', desc:'HashiCorp Vault, AWS Secrets Manager, and GCP Secret Manager store credentials and inject them at runtime. Dynamic secrets expire and rotate automatically.', when:['Database credentials, API keys, and TLS certs must not live in code or config files','Credential rotation must happen without service restarts','Audit trails for secret access are required for compliance'], pros:['No secrets in version control, ever','Dynamic secrets reduce exposure window','Centralized rotation without code deploys'], cons:['Secrets manager becomes a critical availability dependency','Latency on secret fetch must be cached at application startup','Misconfigured IAM policies can block production deployments'], complexity:3 },
+  { id:'api-security', cat:'security', icon:'🛡️', name:'API Rate Limiting and Security', tag:'Protect APIs from abuse, scraping, and injection attacks', desc:'Combine rate limiting, input validation, CORS headers, CSP, auth token validation, and WAF rules into a layered defense. OWASP API Security Top 10 is the checklist.', when:['Public APIs are exposed to untrusted clients','You need protection from automated credential stuffing','Regulatory compliance (PCI DSS, HIPAA) requires documented controls'], pros:['Defense in depth: multiple layers catch different attack types','WAF rules block known vulnerability patterns','Rate limiting protects backend from traffic abuse'], cons:['WAF false positives can block legitimate traffic','Security controls add latency on every request','Keeping rule sets updated requires ongoing attention'], complexity:3 },
+];
+
+const AI_PATTERNS = [
+  { name:'LLM API Gateway', desc:'A dedicated gateway that handles prompt routing, caching identical queries, token budget enforcement, fallback model switching, and cost attribution per team. Build on top of your existing API gateway or use LiteLLM.', stack:['LiteLLM','Redis (prompt cache)','OpenTelemetry','Prometheus'], isNew:true },
+  { name:'RAG with Hybrid Search', desc:'Combine dense (embedding) and sparse (BM25) retrieval to get the benefits of semantic understanding and exact keyword matching. Weaviate and Elasticsearch both support hybrid scoring natively.', stack:['Weaviate / Qdrant','BM25 + HNSW','Sentence-Transformers','Reciprocal Rank Fusion'], isNew:true },
+  { name:'Streaming LLM Response', desc:'Stream tokens from the inference server to the client using SSE or WebSockets. Use a queue between the inference backend and the streaming proxy to handle backpressure from slow clients.', stack:['vLLM streaming','SSE / WebSocket','Token buffer queue','gRPC streaming'], isNew:true },
+  { name:'Agent Memory Architecture', desc:'Give long-running agents a layered memory: in-context (current window), external episodic (vector DB), semantic (knowledge graph), and procedural (tool call history). Compress older memories to keep context budget in check.', stack:['Vector DB (episodic)','Knowledge Graph (semantic)','Redis (working memory)','Context compression'], isNew:true },
+  { name:'Model Routing and Fallback', desc:'Route simple queries to a small fast model (Haiku, Gemini Flash) and complex ones to a large model (Opus, Gemini Pro). On latency or error, fall back to the next tier. Reduces cost by 60-80% without quality loss on easy queries.', stack:['Classifier router','Anthropic / OpenAI APIs','Circuit breaker','Cost telemetry'], isNew:true },
+  { name:'Fine-Tuning Pipeline', desc:'Collect human feedback via RLHF or DPO, format into the model training format, run fine-tuning on a base model, evaluate on held-out benchmarks, register in the model registry, and deploy with A/B gating.', stack:['Axolotl / Unsloth','MLflow registry','VLLM eval harness','PEFT / LoRA'], isNew:false },
+  { name:'Guardrails and Safety Layer', desc:'Wrap every LLM call with input and output classifiers that detect PII, prompt injection, toxic content, and off-topic requests. NeMo Guardrails, Llama Guard, and custom classifiers all fit here.', stack:['Llama Guard','NeMo Guardrails','PII detector','Async eval pipeline'], isNew:true },
+];
+
+const TEMPLATES = [
+  { icon:'🔗', name:'URL Shortener', difficulty:'Beginner', scale:'10B URLs, 100K reads/s', components:['Write API','Read/Redirect API','ID Generator (base62)','Cassandra / DynamoDB','Redis cache (99% hit rate)','Analytics pipeline (Kafka)'], tradeoffs:{ write:'~5K/s, async fanout', read:'<5ms with cache', storage:'~100 bytes/URL' } },
+  { icon:'🐦', name:'Social Media Feed', difficulty:'Intermediate', scale:'500M DAU, 200K posts/s', components:['Post service','Fan-out service','Timeline service','Graph DB (follows)','Cassandra (timelines)','Redis (hot feed)','Kafka (fan-out queue)'], tradeoffs:{ write:'Push vs pull hybrid for celeb accounts', read:'Pre-computed feeds for <1M followers', storage:'Keep 90-day active feed in Redis' } },
+  { icon:'🎥', name:'Video Streaming', difficulty:'Advanced', scale:'2B DAU, 500h uploaded/min', components:['Upload service','Transcoding pipeline','Metadata service','CDN (HLS delivery)','Object storage (S3)','Search index (Elasticsearch)','Recommendation engine'], tradeoffs:{ write:'Async transcoding to 6 quality levels', read:'Adaptive bitrate via HLS manifests', storage:'Tiered: hot on CDN, cold on S3 Glacier' } },
+  { icon:'💬', name:'Chat System', difficulty:'Intermediate', scale:'2B DAU, 50B messages/day', components:['Connection service (WebSocket)','Message service','Presence service','Push notification service','Cassandra (messages)','Redis (sessions, presence)','Kafka (delivery events)'], tradeoffs:{ write:'At-least-once with client-side dedup', read:'Paginated history from Cassandra', storage:'Messages partitioned by conversation ID' } },
+  { icon:'🚗', name:'Ride Sharing', difficulty:'Advanced', scale:'50M DAU, 10M active trips', components:['Location service','Matching service','Trip service','Driver app (WebSocket)','Rider app (REST)','PostGIS (geo queries)','Redis (driver locations)','Kafka (trip events)'], tradeoffs:{ write:'Location updates at 4Hz per driver', read:'Nearest-driver query in <100ms', storage:'Geo-partitioned Redis for live locations' } },
+  { icon:'🤖', name:'LLM API Service', difficulty:'Advanced', scale:'10M requests/day, P99 < 2s', components:['API Gateway (auth, rate limit)','Prompt router (complexity classifier)','Model tier: fast (Haiku) / powerful (Opus)','Prompt cache (Redis, exact-match)','vLLM inference cluster (GPU)','Response streamer (SSE)','Usage metering + billing'], tradeoffs:{ write:'Cache hit rate target: 30-40% on common queries', read:'Stream first token in <300ms P50', storage:'Prompt cache TTL: 5 min, semantic dedup optional' } },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let activeCategory = 'all';
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  buildFilterTabs();
+  renderPatterns();
+  buildAIGrid();
+  buildTemplates();
+  updateCalc();
+  initScrollReveal();
+});
+
+// ============================================================
+// FILTER TABS
+// ============================================================
+function buildFilterTabs() {
+  const counts = {};
+  PATTERNS.forEach(p => { counts[p.cat] = (counts[p.cat] || 0) + 1; });
+  const total = PATTERNS.length;
+  const el = document.getElementById('filter-tabs');
+  el.innerHTML = CATEGORIES.map(c => {
+    const count = c.id === 'all' ? total : (counts[c.id] || 0);
+    return `<button class="filter-btn ${c.id === 'all' ? 'active' : ''}" data-cat="${c.id}" onclick="setCategory('${c.id}')">${c.label} <span style="opacity:0.55;font-size:0.75em">(${count})</span></button>`;
+  }).join('');
+}
+
+function setCategory(cat) {
+  activeCategory = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  renderPatterns();
+}
+
+// ============================================================
+// PATTERNS
+// ============================================================
+function renderPatterns() {
+  const q = (document.getElementById('pattern-search').value || '').toLowerCase();
+  const filtered = PATTERNS.filter(p => {
+    const matchCat = activeCategory === 'all' || p.cat === activeCategory;
+    const matchQ = !q || p.name.toLowerCase().includes(q) || p.tag.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+  document.getElementById('pattern-count').textContent = `Showing ${filtered.length} of ${PATTERNS.length} patterns`;
+  const grid = document.getElementById('patterns-grid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty-state">No patterns match your search. Try a different term or category.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(p => patternCardHTML(p)).join('');
+}
+
+function patternCardHTML(p) {
+  const dots = Array.from({length:5}, (_,i) => `<div class="complexity-dot ${i < p.complexity ? 'filled' : ''}"></div>`).join('');
+  return `
+    <div class="pattern-card" onclick="openModal('${p.id}')">
+      <div class="pattern-header">
+        <span class="pattern-icon">${p.icon}</span>
+        <div class="complexity-dots" title="Complexity ${p.complexity}/5">${dots}</div>
+      </div>
+      <div class="pattern-name">${p.name}</div>
+      <div class="pattern-tagline">${p.tag}</div>
+      <div class="pattern-cat-tag cat-${p.cat}">${catLabel(p.cat)}</div>
+    </div>`;
+}
+
+function catLabel(cat) {
+  const map = { infra:'Infrastructure', data:'Data Storage', cache:'Caching', scale:'Scalability', reliable:'Reliability', api:'API & Messaging', ai:'AI / ML', security:'Security' };
+  return map[cat] || cat;
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+function openModal(id) {
+  const p = PATTERNS.find(x => x.id === id);
+  if (!p) return;
+  const dots = Array.from({length:5}, (_,i) => `<div class="complexity-dot ${i < p.complexity ? 'filled' : ''}"></div>`).join('');
+  document.getElementById('modal-content').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.25rem">
+      <span style="font-size:2.5rem">${p.icon}</span>
+      <div>
+        <h2>${p.name}</h2>
+        <div class="tagline">${p.tag}</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:1.5rem">
+      <span style="font-size:0.78rem;color:var(--muted);font-weight:600">Complexity:</span>
+      <div class="complexity-dots">${dots}</div>
+      <span style="font-size:0.75rem;color:var(--muted)">${p.complexity}/5</span>
+    </div>
+    <div class="modal-section">
+      <h4>What it is</h4>
+      <p>${p.desc}</p>
+    </div>
+    <div class="modal-section">
+      <h4>When to use it</h4>
+      <ul class="when">${p.when.map(w => `<li>${w}</li>`).join('')}</ul>
+    </div>
+    <div class="modal-section">
+      <h4>What you gain</h4>
+      <ul class="pros">${p.pros.map(x => `<li>${x}</li>`).join('')}</ul>
+    </div>
+    <div class="modal-section">
+      <h4>What you give up</h4>
+      <ul class="cons">${p.cons.map(x => `<li>${x}</li>`).join('')}</ul>
+    </div>
+    <div style="margin-top:1.5rem">
+      <span class="pattern-cat-tag cat-${p.cat}" style="font-size:0.73rem">${catLabel(p.cat)}</span>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+
+// ============================================================
+// CAPACITY CALCULATOR
+// ============================================================
+function fmt(n) {
+  if (n >= 1e12) return (n/1e12).toFixed(1) + ' PB';
+  if (n >= 1e9)  return (n/1e9).toFixed(1) + ' TB';
+  if (n >= 1e6)  return (n/1e6).toFixed(1) + ' GB';
+  if (n >= 1e3)  return (n/1e3).toFixed(1) + ' MB';
+  return n.toFixed(0) + ' KB';
+}
+function fmtBw(bytesPerSec) {
+  if (bytesPerSec >= 1e9) return (bytesPerSec/1e9).toFixed(1) + ' GB/s';
+  if (bytesPerSec >= 1e6) return (bytesPerSec/1e6).toFixed(1) + ' MB/s';
+  if (bytesPerSec >= 1e3) return (bytesPerSec/1e3).toFixed(1) + ' KB/s';
+  return bytesPerSec.toFixed(0) + ' B/s';
+}
+function fmtNum(n) {
+  if (n >= 1e6) return (n/1e6).toFixed(1) + 'M';
+  if (n >= 1e3) return (n/1e3).toFixed(0) + 'K';
+  return n.toString();
+}
+function updateCalc() {
+  const dau     = parseInt(document.getElementById('sl-dau').value)   * 1e6;
+  const reqPD   = parseInt(document.getElementById('sl-req').value);
+  const sizeKB  = parseInt(document.getElementById('sl-size').value);
+  const storeKB = parseInt(document.getElementById('sl-store').value);
+  const years   = parseInt(document.getElementById('sl-ret').value);
+
+  document.getElementById('lbl-dau').textContent   = fmtNum(dau);
+  document.getElementById('lbl-req').textContent   = reqPD;
+  document.getElementById('lbl-size').textContent  = sizeKB + ' KB';
+  document.getElementById('lbl-store').textContent = storeKB + ' KB';
+  document.getElementById('lbl-ret').textContent   = years;
+
+  const avgRPS  = Math.ceil((dau * reqPD) / 86400);
+  const peakRPS = Math.ceil(avgRPS * 3);
+  const dailyStorageBytes = dau * storeKB * 1024;
+  const totalStorageBytes = dailyStorageBytes * 365 * years;
+  const bwBytes = peakRPS * sizeKB * 1024;
+  const cacheBytes = totalStorageBytes * 0.10;
+
+  document.getElementById('r-rps').textContent   = avgRPS.toLocaleString();
+  document.getElementById('r-peak').textContent  = peakRPS.toLocaleString();
+  document.getElementById('r-store').textContent = fmt(dailyStorageBytes);
+  document.getElementById('r-total').textContent = fmt(totalStorageBytes);
+  document.getElementById('r-bw').textContent    = fmtBw(bwBytes);
+  document.getElementById('r-cache').textContent = fmt(cacheBytes);
+  document.getElementById('r-ret-label').textContent = `over ${years} year${years>1?'s':''}`;
+}
+
+// ============================================================
+// AI GRID
+// ============================================================
+function buildAIGrid() {
+  document.getElementById('ai-grid').innerHTML = AI_PATTERNS.map(a => `
+    <div class="ai-card">
+      ${a.isNew ? '<span class="ai-new-badge">NEW IN 2026</span>' : ''}
+      <h3>${a.name}</h3>
+      <p>${a.desc}</p>
+      <div class="ai-stack">${a.stack.map(s => `<span class="ai-chip">${s}</span>`).join('')}</div>
+    </div>`).join('');
+}
+
+// ============================================================
+// TEMPLATES
+// ============================================================
+function buildTemplates() {
+  document.getElementById('templates-grid').innerHTML = TEMPLATES.map(t => `
+    <div class="template-card">
+      <div class="template-header">
+        <div class="template-icon">${t.icon}</div>
+        <div>
+          <h3>${t.name}</h3>
+          <p>Scale target: ${t.scale}</p>
+        </div>
+      </div>
+      <div class="template-body">
+        <div class="template-components">${t.components.map(c => `<span class="tech-chip">${c}</span>`).join('')}</div>
+        <div class="template-metrics">
+          <div class="tm"><span class="tm-label">WRITES</span><span class="tm-val">${t.tradeoffs.write}</span></div>
+          <div class="tm"><span class="tm-label">READS</span><span class="tm-val">${t.tradeoffs.read}</span></div>
+          <div class="tm" style="grid-column:span 2"><span class="tm-label">STORAGE STRATEGY</span><span class="tm-val">${t.tradeoffs.storage}</span></div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ============================================================
+// SCROLL REVEAL
+// ============================================================
+function initScrollReveal() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+</script>
+</body>
+</html>

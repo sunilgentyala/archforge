@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bgMain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#07070f"/>
+      <stop offset="100%" style="stop-color:#0f0f2a"/>
+    </linearGradient>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="50%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="30%" cy="40%" r="60%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="75%" cy="60%" r="50%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.12"/>
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0"/>
+    </radialGradient>
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgMain)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- Grid lines (subtle) -->
+  <g opacity="0.04" stroke="#6366f1" stroke-width="1">
+    <line x1="0" y1="105" x2="1200" y2="105"/>
+    <line x1="0" y1="210" x2="1200" y2="210"/>
+    <line x1="0" y1="315" x2="1200" y2="315"/>
+    <line x1="0" y1="420" x2="1200" y2="420"/>
+    <line x1="0" y1="525" x2="1200" y2="525"/>
+    <line x1="150" y1="0" x2="150" y2="630"/>
+    <line x1="300" y1="0" x2="300" y2="630"/>
+    <line x1="450" y1="0" x2="450" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="750" y1="0" x2="750" y2="630"/>
+    <line x1="900" y1="0" x2="900" y2="630"/>
+    <line x1="1050" y1="0" x2="1050" y2="630"/>
+  </g>
+
+  <!-- Logo mark (arch) -->
+  <g transform="translate(90, 215)">
+    <path d="M0 140 Q0 28 100 0 Q200 28 200 140" stroke="url(#grad1)" stroke-width="12" fill="none" stroke-linecap="round" filter="url(#blur)"/>
+    <line x1="-18" y1="140" x2="218" y2="140" stroke="url(#grad1)" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="100" cy="2" r="9" fill="#8b5cf6" filter="url(#blur)"/>
+    <circle cx="25" cy="78" r="6" fill="#6366f1" filter="url(#blur)"/>
+    <circle cx="175" cy="78" r="6" fill="#06b6d4" filter="url(#blur)"/>
+    <circle cx="0" cy="140" r="8" fill="#6366f1" filter="url(#blur)"/>
+    <circle cx="200" cy="140" r="8" fill="#06b6d4" filter="url(#blur)"/>
+  </g>
+
+  <!-- Brand name -->
+  <text x="330" y="290" font-family="'Segoe UI', Arial, sans-serif" font-size="96" font-weight="700" fill="white" letter-spacing="-2">Arch</text>
+  <text x="330" y="290" font-family="'Segoe UI', Arial, sans-serif" font-size="96" font-weight="700" fill="url(#grad1)" letter-spacing="-2" dx="218">Forge</text>
+
+  <!-- Tagline -->
+  <text x="330" y="345" font-family="'Segoe UI', Arial, sans-serif" font-size="28" fill="#94a3b8" letter-spacing="0.5">The Modern System Design Workbench</text>
+
+  <!-- Pills / features -->
+  <g transform="translate(330, 390)">
+    <!-- Pill 1 -->
+    <rect x="0" y="0" width="195" height="42" rx="21" fill="rgba(99,102,241,0.15)" stroke="#6366f1" stroke-width="1"/>
+    <text x="98" y="27" font-family="'Segoe UI', Arial, sans-serif" font-size="16" fill="#a5b4fc" text-anchor="middle">60+ Design Patterns</text>
+    <!-- Pill 2 -->
+    <rect x="215" y="0" width="200" height="42" rx="21" fill="rgba(139,92,246,0.15)" stroke="#8b5cf6" stroke-width="1"/>
+    <text x="315" y="27" font-family="'Segoe UI', Arial, sans-serif" font-size="16" fill="#c4b5fd" text-anchor="middle">Capacity Calculator</text>
+    <!-- Pill 3 -->
+    <rect x="435" y="0" width="215" height="42" rx="21" fill="rgba(6,182,212,0.15)" stroke="#06b6d4" stroke-width="1"/>
+    <text x="543" y="27" font-family="'Segoe UI', Arial, sans-serif" font-size="16" fill="#67e8f9" text-anchor="middle">AI/LLM Architectures</text>
+  </g>
+
+  <!-- Bottom accent line -->
+  <rect x="0" y="620" width="1200" height="4" fill="url(#grad1)" opacity="0.7"/>
+
+  <!-- Top left accent dot cluster -->
+  <circle cx="50" cy="50" r="3" fill="#6366f1" opacity="0.6"/>
+  <circle cx="70" cy="35" r="2" fill="#8b5cf6" opacity="0.5"/>
+  <circle cx="90" cy="55" r="2.5" fill="#06b6d4" opacity="0.4"/>
+
+  <!-- Bottom right accent -->
+  <circle cx="1150" cy="580" r="4" fill="#06b6d4" opacity="0.5"/>
+  <circle cx="1170" cy="560" r="2.5" fill="#8b5cf6" opacity="0.4"/>
+  <circle cx="1130" cy="600" r="2" fill="#6366f1" opacity="0.3"/>
+</svg>
